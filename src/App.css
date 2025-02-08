@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
-
 *{
     margin: 0;
     padding: 0;
@@ -9,4 +8,25 @@
 }
 .description{
     text-align: justify;
+}
+.vh-7{
+    height: 80vh;
+}
+
+@keyframes colorchange {
+    0% {color: green;}
+    30%{color: orangered;}
+    50%{color: orange;}
+    80%{color: red;}
+    100% {color: blue;}
+}
+
+.animate{
+    color: red;
+    animation: colorchange 4s linear infinite;
+}
+
+/* header-global */
+.header-global{
+    padding: 40px 0;
 }

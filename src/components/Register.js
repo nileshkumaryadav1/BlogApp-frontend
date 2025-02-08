@@ -50,7 +50,6 @@ const Registration = () => {
       }
     } catch (err) {
       toast.error("Registration failed and caught in catch. Try again!");
-      console.error('Registration error:', err);
       setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
