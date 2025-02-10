@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Navbar from "./navbar-footer/Navbar";
+import Navbar from "../components/Navbar.js";
 import bootstrap from "bootstrap/dist/css/bootstrap.min.css";
 
 // import toast, { Toaster } from 'react-hot-toast';
@@ -61,7 +61,6 @@ const CreateBlog = () => {
 
   return (
     <>
-      <Navbar />
 
       <div
         className="d-flex flex-column justify-content-center align-items-center bg-gradient vh-7"
@@ -83,7 +82,7 @@ const CreateBlog = () => {
           <div>
             <h3>Hi {loggedInUserName} !</h3>
             <h5 className="mb-2 d-flex justify-content-center align-items-center">
-              Create a Blog...<i class="fa-solid fa-pen"></i>
+              Create a Blog...<i class="fa-solid fa-pen fa-shake"></i>
             </h5>
           </div>
 
@@ -115,7 +114,7 @@ const CreateBlog = () => {
             </div>
 
             <button
-              className="btn btn-primary w-100 btn-lg fw-bold shadow-sm mb-2"
+              className="btn btn-primary p-2 fs-5"
               type="submit"
               disabled={loading}
             >

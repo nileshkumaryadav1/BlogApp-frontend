@@ -1,4 +1,4 @@
-import { Button, Container, Card, Row, Col, Navbar } from "react-bootstrap";    
+import { Button, Container, Card, Row, Col, Navbar } from "react-bootstrap";
 import { Links, useNavigate } from "react-router-dom";
 import bootstrap from "bootstrap/dist/css/bootstrap.min.css";
 
@@ -12,6 +12,7 @@ export default function DashboardPage() {
 
   const loggedInUserName = localStorage.getItem("name");
   const loggedInUserEmail = localStorage.getItem("email");
+  const loggedInUser_id = localStorage.getItem("_id");
 
   useEffect(() => {
     axios
@@ -37,29 +38,68 @@ export default function DashboardPage() {
     window.location.reload(); // refresh to see changes
   };
 
+  const handleEdit = (id) => {
+    navigate(`/edit-blog/${id}`); // Navigate to edit page
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`https://blogapp-server-wa7m.onrender.com/api/blogs/${id}`);
+      // await axios.delete(`http://localhost:4000/api/blogs/${id}`);
+      alert("Blog deleted ❌!");
+      setPosts(posts.filter((post) => post._id !== id)); // Remove blog from state
+    } catch (err) {
+      console.error(err);
+      alert("Error deleting blog.");
+    }
+  };
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark ">
         <div className="container">
           <Link className="navbar-brand fw-bold text-black d-flex" to="/">
             <h2>
-              <i class="fa-solid fa-house"></i>
+              <i class="fa-solid fa-blog fa-bounce"></i>log{" "}
+              <button className="btn btn-light">Home</button>
             </h2>
-            <p className="pt-1">Home page</p>
           </Link>
 
-          <button className="btn btn-danger" onClick={handleLogout}>
-            Logout <i class="fa-solid fa-arrow-right-from-bracket"></i>
-          </button>
+          <div className="d-flex">
+            <Link
+              to={`/edit-user/${loggedInUser_id}`}
+              variant="success"
+              className="btn btn-primary"
+            >
+              <i class="fa-solid fa-pen fa-flip"></i> Edit Profile Details
+            </Link>
+
+            <Link
+              to={`/profile/${loggedInUserName}`}
+              className="btn btn-primary mx-4"
+            >
+              <i class="fa-regular fa-user"></i> Profile
+            </Link>
+
+            <button className="btn btn-danger" onClick={handleLogout}>
+              Logout <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
+          </div>
         </div>
       </nav>
 
       <div className="text-center mb-4">
-        <h1 className="animate" >Hello {loggedInUserName} !</h1>
-        <h5 className="mb-3">Welcome to Your Blog Dashboard <i class="fa-regular fa-id-badge"></i></h5>
-        <Button href="/create/blog" variant="success" className="mb-4">
-        <i class="fa-regular fa-pen-to-square"></i> Create New Blog
-        </Button>
+        <h1 className="animate">Hello {loggedInUserName} !</h1>
+        <h5 className="mb-3">
+          Welcome to Your Blog Dashboard <i class="fa-regular fa-id-badge"></i>
+        </h5>
+        <Link
+          to="/create/blog"
+          variant="success"
+          className="btn btn-primary mb-4"
+        >
+          <i class="fa-regular fa-pen-to-square fa-beat"></i> Create New Blog
+        </Link>
       </div>
 
       <div className="container mb-3">
@@ -82,22 +122,39 @@ export default function DashboardPage() {
                         >
                           View full Blog
                         </Link>
-                        <button className="btn btn-secondary mx-1"> Edit</button>
                       </div>
 
-                      <button className="btn btn-light text-warning">Delete <i class="fa-solid fa-trash"></i></button>
+                      {post && post.userName === loggedInUserName && (
+                        <>
+                          <button
+                            className="btn btn-secondary mx-1"
+                            onClick={() => handleEdit(post._id)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn btn-light text-warning"
+                            onClick={() => handleDelete(post._id)}
+                          >
+                            Delete <i class="fa-solid fa-trash"></i>
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
             ))
           ) : (
-            <p className="text-center">No Blogs created yet.</p>
+            <p className="text-center">You have not created any Blogs.</p>
           )}
         </div>
       </div>
       <footer className="bg-dark text-white text-center py-3">
-        <p className="mb-0 ">&copy; 2025 Blog<i class="fa-solid fa-blog"></i>. All rights reserved.</p>
+        <p className="mb-0 ">
+          &copy; 2025 Blog<i class="fa-solid fa-blog fa-bounce"></i>. All rights
+          reserved.
+        </p>
       </footer>
     </div>
   );

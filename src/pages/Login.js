@@ -39,10 +39,14 @@ const Login = () => {
         toast.success("Login successful! 🎉");
         localStorage.setItem("name", data.user.name); // Save name to local storage
         localStorage.setItem("email", data.user.email); // Save email to local storage
+        localStorage.setItem("_id", data.user._id); // Save _id to local storage
 
         alert( 'Login successful! 🎉');
 
-        navigate('/profile');
+        const loggedInUserName = localStorage.getItem("name");
+
+        // navigate(`/profile/${loggedInUserName}`);
+        navigate("/profile");
       } else {
         console.log("not login")
         toast.error(data.message || "Invalid credentials!");

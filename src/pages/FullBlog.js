@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import "../../App.css";
+import "../App.css";
 
 export default function FullBlog() {
   const { id } = useParams(); // Get blog ID from URL
@@ -10,6 +10,7 @@ export default function FullBlog() {
   useEffect(() => {
     axios
       .get(`https://blogapp-server-wa7m.onrender.com/api/blogs/${id}`)
+      // .get(`http://localhost:4000/api/blogs/${id}`)
       .then((response) => setBlog(response.data))
       .catch((error) => console.error("Error fetching blog:", error));
   }, [id]);
@@ -27,10 +28,19 @@ export default function FullBlog() {
           <p className="bg-light rounded-bottom border-top p-3 description">
             {blog.description}
           </p>
+          <p>
+            Written by{" "}
+            <a href={`/profile/${blog.userName}`}>
+              <strong>{blog.userName}</strong>
+            </a>
+          </p>
         </div>
       </div>
       <footer className="bg-light text-black text-center py-3 vw-100">
-        <p className="mb-0 ">&copy; 2025 My Blog. All rights reserved.</p>
+        <p className="mb-0 ">
+          &copy; 2025 Blog <i class="fa-solid fa-blog fa-beat"></i>. All rights
+          reserved.
+        </p>
       </footer>
     </>
   );

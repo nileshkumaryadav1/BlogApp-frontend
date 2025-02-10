@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-// import { ToastContainer, toast } from 'react-toastify';
 // import toast, { Toaster } from 'react-hot-toast';
 
 import bootstrap from "bootstrap/dist/css/bootstrap.min.css";
@@ -30,7 +29,7 @@ const Registration = () => {
     setError('');
 
     try {
-      // Make API call to a dummy registration API
+      // Make api call
       const response = await axios.post('https://blogapp-server-wa7m.onrender.com/api/users', {
         name,
         email,

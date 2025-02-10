@@ -22,7 +22,9 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-info justify-content-between p-3">
       <Link className="navbar-brand fw-bold text-white d-flex" to="/">
-        Blog<i class="fa-solid fa-blog"></i>
+        <h3>
+          <i class="fa-solid fa-blog fa-bounce"></i>log <button className="btn btn-light">Home</button>
+        </h3>
       </Link>
 
       <div className="ml-auto ">
@@ -43,12 +45,12 @@ const Navbar = () => {
               <ul className="navbar-nav ms-auto d-flex align-items-center">
                 <li className="nav-item">
                   <Link to="/register" className="btn btn-secondary mx-2 mb-1">
-                  <i class="fa-solid fa-user-plus"></i> Register
+                    <i class="fa-solid fa-user-plus"></i> Register
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link to="/login" className="btn btn-primary mx-2 mb-1">
-                  <i class="fa-solid fa-right-to-bracket"></i> Login
+                    <i class="fa-solid fa-right-to-bracket"></i> Login
                   </Link>
                 </li>
               </ul>
@@ -56,7 +58,7 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <Link className="btn btn-primary mx-2" to="/profile">
+            <Link className="btn btn-primary mx-2" to={`/profile/${loggedInUserName}`}>
               <i class="fa-regular fa-user"></i>Profile
             </Link>
 
