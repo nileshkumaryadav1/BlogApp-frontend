@@ -13,12 +13,12 @@ const EditUser = () => {
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [study, setStudy] = useState("");
   const [bio, setBio] = useState("");
   const [instagram, setInstagram] = useState("");
-  const [twitter, setTwitter] = useState("");
+  const [linkedin, setLinkedin] = useState("");
 
   // Fetch user data when page loads
   useEffect(() => {
@@ -27,12 +27,12 @@ const EditUser = () => {
         const res = await axios.get(`https://blogapp-server-wa7m.onrender.com/api/users/${id}`);
         // const res = await axios.get(`http://localhost:4000/api/users/${id}`);
         setName(res.data.name);
-        setEmail(res.data.email);
+        // setEmail(res.data.email);
         setPassword(res.data.password);
         setStudy(res.data.study);
         setBio(res.data.bio);
         setInstagram(res.data.instagram);
-        setTwitter(res.data.twitter);
+        setLinkedin(res.data.linkedin);
       } catch (err) {
         console.error("Error fetching user:", err);
       }
@@ -47,17 +47,17 @@ const EditUser = () => {
       await axios.patch(`https://blogapp-server-wa7m.onrender.com/api/users/${id}`, {
       // await axios.patch(`http://localhost:4000/api/users/${id}`, {
         name,
-        email,
+        // email,
         password,
         study,
         bio,
         instagram,
-        twitter,
+        linkedin,
       });
       alert("User updated successfully 🎉!");
 
       localStorage.setItem("name", name); // Save name to local storage
-      localStorage.setItem("email", email); // Save email to local storage
+      // localStorage.setItem("email", email); // Save email to local storage
 
       navigate("/profile"); // Redirect to dashboard page
     } catch (err) {
@@ -81,7 +81,7 @@ const EditUser = () => {
               required
             />
           </div>
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label className="form-label">Email</label>
             <input
               className="form-control"
@@ -90,7 +90,7 @@ const EditUser = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-          </div>
+          </div> */}
           <div className="mb-3">
             <label className="form-label">Password</label>
             <input
@@ -108,7 +108,6 @@ const EditUser = () => {
               rows="2"
               value={study}
               onChange={(e) => setStudy(e.target.value)}
-              required
             />
           </div>
           <div className="mb-3">
@@ -118,7 +117,6 @@ const EditUser = () => {
               rows="2"
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              required
             />
           </div>
           <div className="mb-3">
@@ -128,16 +126,15 @@ const EditUser = () => {
               rows="2"
               value={instagram}
               onChange={(e) => setInstagram(e.target.value)}
-              required
             />
           </div>
           <div className="mb-3">
-            <label className="form-label">Twitter Profile link</label>
+            <label className="form-label">LinkedIn Profile link</label>
             <input
               className="form-control"
               rows="2"
-              value={twitter}
-              onChange={(e) => setTwitter(e.target.value)}
+              value={linkedin}
+              onChange={(e) => setLinkedin(e.target.value)}
             />
           </div>
           <button type="submit" className="btn btn-primary">

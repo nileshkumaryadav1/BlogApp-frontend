@@ -12,6 +12,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("email"); // clear user data from local storage
     localStorage.removeItem("name");
+    localStorage.removeItem("_id");
     setIsLoggedIn(false); // update state
     window.location.reload(); // refresh to see changes
   };

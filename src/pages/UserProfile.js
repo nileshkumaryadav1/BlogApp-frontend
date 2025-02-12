@@ -49,7 +49,7 @@ const UserProfile = () => {
     <>
       <Navbar />
 
-      <p className="text-warning">*This section is under development.</p>
+      {/* <p className="text-warning">*This section is under development.</p> */}
 
       <div class="container mt-4">
         <div class="card mx-auto">
@@ -57,10 +57,10 @@ const UserProfile = () => {
             <i class="fa-solid fa-user"></i>
           </h2>
           <div class="card-body text-center">
-            {/* <h4 class="card-title">{users.name}</h4> */}
+            <h4 class="card-title">{users.name}</h4>
             <p class="card-text">
-              Bachelor of Technology | Katihar Engineering College
-              {/* {users.study} */}
+              {/* Bachelor of Technology | Katihar Engineering College   */}
+              {users.study}
             </p>
             <Link to={"/profile"} className="btn btn-primary mx-2">
               Dashboard <i class="fa-regular fa-id-badge"></i>
@@ -73,7 +73,7 @@ const UserProfile = () => {
             <h3>About Me</h3>
             <p>
               {/* Hi, I'm {users.name}, <br></br>  */}
-              {/* {users.bio} */}
+              {users.bio}
             </p>
           </div>
 
@@ -81,20 +81,21 @@ const UserProfile = () => {
             <h3>Social Links</h3>
             <div className="">
               <h5 className="text-center mx-1">
-                <i class="fa-brands fa-instagram"></i>
                 <a
-                //  href={users.instagram} 
+                 className="text-decoration-none"
+                 href={users.instagram} 
                  target="_blank">
-                  {" "}
-                  IG
+                <i class="fa-brands fa-instagram"></i>
+                 Instagram
                 </a>
               </h5>
               <h5 className="text-center mx-1">
-                <i class="fa-brands fa-twitter"></i>
                 <a 
-                // href={users.twitter}
+                className="text-decoration-none"
+                href={users.linkedin}
                  target="_blank">
-                  Twitter
+                  <i class="fa-brands fa-linkedin"></i>
+                  LinkedIn
                 </a>
               </h5>
             </div>
@@ -113,7 +114,7 @@ const UserProfile = () => {
         </div>
 
         <div className="container mb-3 mt-2 pt-1 col-md-12 border-top">
-          <h4 className="card-title text-black mb-2">Latest Blogs</h4>
+          <h4 className="card-title text-black mb-2">Latest Blogs by {name}</h4>
 
           <div className="row mb-3">
             {blogs.length > 0 ? (
@@ -148,7 +149,7 @@ const UserProfile = () => {
             ) : (
               <>
                 <p className="fst-italic">
-                  {/* {users.name} have not created any Blog yet. */}
+                  {users.name} have not created any Blog yet.
                 </p>
               </>
             )}

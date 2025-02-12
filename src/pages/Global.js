@@ -72,12 +72,26 @@ export default function GlobalPage() {
                       <div>
                         <div className="d-flex justify-content-center">
                           <h5 className="text-center mx-1">
-                            <i class="fa-brands fa-instagram" target="_blank"></i>
-                            <a href={user.instagram}></a>
+                            <a
+                              className="text-decoration-none"
+                              href={user.instagram}
+                              target="_blank"
+                            >
+                              <i
+                              class="fa-brands fa-instagram"
+                            ></i>
+                            </a>
                           </h5>
                           <h5 className="text-center mx-1">
-                            <i class="fa-brands fa-twitter"></i>
-                            <a href={user.twitter} target="_blank"></a>
+                          <a
+                              className="text-decoration-none"
+                              href={user.linkedin}
+                              target="_blank"
+                            >
+                              <i
+                              class="fa-brands fa-linkedin"
+                            ></i>
+                            </a>
                           </h5>
                         </div>
                         {/* <p > Time : {getTimeAgo(user.timestamp)}</p> */}
@@ -134,7 +148,7 @@ export default function GlobalPage() {
                           className="btn btn-light mb-1"
                           to={`/profile/${post.userName}`}
                         >
-                          <i class="fa-solid fa-pen-nib"></i> Author :{" "}
+                          <i class="fa-solid fa-pen-nib"></i> Author : {""}
                           {post.userName}
                         </Link>
                         {/* <p > Time : {getTimeAgo(post.timestamp)}</p> */}
@@ -142,7 +156,7 @@ export default function GlobalPage() {
                           to={`/blog/${post._id}`}
                           className="btn btn-outline-secondary w-100"
                         >
-                          Read More{" "}
+                          Read More
                           <i class="fa-solid fa-book-open fa-flip"></i>
                         </Link>
                       </div>

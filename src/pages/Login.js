@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import bootstrap from "bootstrap/dist/css/bootstrap.min.css";
 
@@ -48,7 +48,6 @@ const Login = () => {
         // navigate(`/profile/${loggedInUserName}`);
         navigate("/profile");
       } else {
-        console.log("not login")
         toast.error(data.message || "Invalid credentials!");
         setError('Login failed. Please try again.');
       }
@@ -62,7 +61,17 @@ const Login = () => {
 
   return (
 
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-gradient" style={{ background: "linear-gradient(to right, #6a11cb, #2575fc)", padding: "20px" }}>
+    <>
+
+    <nav>
+        <Link className="navbar-brand fw-bold text-black d-flex justify-content-center m-4 " to="/">
+          <h2>
+            <button className="btn btn-light">Home</button>
+          </h2>
+        </Link>
+      </nav>
+
+    <div className="d-flex justify-content-center align-items-center vh-75 bg-gradient" style={{ background: "linear-gradient(to right, #6a11cb, #2575fc)", padding: "20px" }}>
         
     <form onSubmit={handleLogin}>
     <div className="card p-4 shadow-lg rounded" style={{ background: "rgba(255, 255, 255, 0.9)", width: "100%", maxWidth: "400px" }}>
@@ -97,6 +106,8 @@ const Login = () => {
     </form>
 
     </div>
+
+  </> 
   );
 };
 

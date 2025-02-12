@@ -16,7 +16,9 @@ export default function DashboardPage() {
 
   useEffect(() => {
     axios
-      .get(`https://blogapp-server-wa7m.onrender.com/api/blogs/?userEmail=${loggedInUserEmail}`)
+      .get(
+        `https://blogapp-server-wa7m.onrender.com/api/blogs/?userEmail=${loggedInUserEmail}`
+      )
       // .get(`http://localhost:4000/api/blogs/?userEmail=${loggedInUserEmail}`)
       .then((response) => setPosts(response.data))
       .catch((error) => console.error("Error fetching posts:", error));
@@ -33,6 +35,7 @@ export default function DashboardPage() {
   const handleLogout = () => {
     localStorage.removeItem("email"); // clear user data from local storage
     localStorage.removeItem("name");
+    localStorage.removeItem("_id");
     setIsLoggedIn(false); // update state
     navigate("/");
     window.location.reload(); // refresh to see changes
@@ -48,6 +51,35 @@ export default function DashboardPage() {
       // await axios.delete(`http://localhost:4000/api/blogs/${id}`);
       alert("Blog deleted ❌!");
       setPosts(posts.filter((post) => post._id !== id)); // Remove blog from state
+    } catch (err) {
+      console.error(err);
+      alert("Error deleting blog.");
+    }
+  };
+
+  const deleteAllBlog = async () => {
+    try {
+      await axios.delete( `https://blogapp-server-wa7m.onrender.com/api/blogs/?userEmail=${loggedInUserEmail}`);
+      // await axios.delete( `http://localhost:4000/api/blogs/?userEmail=${loggedInUserEmail}`);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDeleteUser = async (id) => {
+    try {
+      await axios.delete(`https://blogapp-server-wa7m.onrender.com/api/users/${id}`);
+      // await axios.delete(`http://localhost:4000/api/users/${id}`);
+
+      deleteAllBlog(loggedInUserEmail);
+
+      localStorage.removeItem("email"); // clear user data from local storage
+      localStorage.removeItem("name");
+      localStorage.removeItem("_id");
+
+      alert("Your account is deleted ❌!");
+
+      navigate('/'); // Navigate to global page
     } catch (err) {
       console.error(err);
       alert("Error deleting blog.");
@@ -83,6 +115,13 @@ export default function DashboardPage() {
 
             <button className="btn btn-danger" onClick={handleLogout}>
               Logout <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
+
+            <button
+              className="btn btn-warning text-black mx-2"
+              onClick={() => handleDeleteUser(loggedInUser_id)}
+            >
+              Delete your Account <i class="fa-solid fa-trash"></i>
             </button>
           </div>
         </div>
@@ -124,7 +163,7 @@ export default function DashboardPage() {
                         </Link>
                       </div>
 
-                      {post && post.userName === loggedInUserName && (
+                      {post && post.userEmail === loggedInUserEmail && (
                         <>
                           <button
                             className="btn btn-secondary mx-1"
