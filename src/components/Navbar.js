@@ -6,67 +6,66 @@ const Navbar = () => {
 
   useEffect(() => {
     const userEmail = localStorage.getItem("email");
-    setIsLoggedIn(!!userEmail); // make boolean (true when exists, false when it is empty)
+    setIsLoggedIn(!!userEmail);
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("email"); // clear user data from local storage
+    localStorage.removeItem("email");
     localStorage.removeItem("name");
     localStorage.removeItem("_id");
-    setIsLoggedIn(false); // update state
-    window.location.reload(); // refresh to see changes
+    setIsLoggedIn(false);
+    window.location.reload();
   };
 
   const loggedInUserName = localStorage.getItem("name");
-  const loggedInUserEmail = localStorage.getItem("email");
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-info justify-content-between p-3">
-      <Link className="navbar-brand fw-bold text-white d-flex" to="/">
-        <h3>
-          <i class="fa-solid fa-blog fa-bounce"></i>log <button className="btn btn-light">Home</button>
-        </h3>
+    <nav className="navbar navbar-expand-lg navbar-light bg-info px-4 py-3 shadow-sm">
+      <Link className="navbar-brand d-flex align-items-center text-white" to="/">
+        <h4 className="mb-0">
+          <i className="fa-solid fa-blog fa-bounce me-2"></i>Blog
+        </h4>
+        <button className="btn btn-light btn-sm ms-3">Home</button>
       </Link>
 
-      <div className="ml-auto ">
-        {!isLoggedIn ? (
-          <>
-            <button
-              className="navbar-toggler mb-2"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarNav"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div
-              className="collapse navbar-collapse  flex-direction-row"
-              id="navbarNav"
-            >
-              <ul className="navbar-nav ms-auto d-flex align-items-center">
-                <li className="nav-item">
-                  <Link to="/register" className="btn btn-secondary mx-2 mb-1">
-                    <i class="fa-solid fa-user-plus"></i> Register
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/login" className="btn btn-primary mx-2 mb-1">
-                    <i class="fa-solid fa-right-to-bracket"></i> Login
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </>
-        ) : (
-          <>
-            <Link className="btn btn-primary mx-2" to={`/profile/${loggedInUserName}`}>
-              <i class="fa-regular fa-user"></i>Profile
-            </Link>
+      <button
+        className="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span className="navbar-toggler-icon"></span>
+      </button>
 
+      <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+        {!isLoggedIn ? (
+          <ul className="navbar-nav d-flex align-items-center gap-2">
+            <li className="nav-item">
+              <Link to="/register" className="btn btn-outline-light">
+                <i className="fa-solid fa-user-plus me-1"></i> Register
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/login" className="btn btn-light">
+                <i className="fa-solid fa-right-to-bracket me-1"></i> Login
+              </Link>
+            </li>
+          </ul>
+        ) : (
+          <div className="d-flex align-items-center gap-2">
+            <Link
+              className="btn btn-light"
+              to={`/profile/${loggedInUserName}`}
+            >
+              <i className="fa-regular fa-user me-1"></i> Profile
+            </Link>
             <button className="btn btn-danger" onClick={handleLogout}>
-              Logout <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              <i className="fa-solid fa-arrow-right-from-bracket me-1"></i> Logout
             </button>
-          </>
+          </div>
         )}
       </div>
     </nav>

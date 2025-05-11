@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-// import toast, { Toaster } from 'react-hot-toast';
-
+import toast, { Toaster } from "react-hot-toast";
 import bootstrap from "bootstrap/dist/css/bootstrap.min.css";
-
-import toast from "react-hot-toast";
 
 const Registration = () => {
   const [name, setName] = useState("");
@@ -28,7 +25,7 @@ const Registration = () => {
     setError("");
 
     try {
-      // Make api call
+      // Make API call
       const response = await axios.post(
         "https://blogapp-server-wa7m.onrender.com/api/users",
         {
@@ -40,18 +37,17 @@ const Registration = () => {
 
       // Simulate a successful registration response
       if (response.status === 201) {
-        alert("Registeration successful! 🎉");
         toast.success("Registration successful! 🎉");
         // Redirect to the login page after successful registration
         navigate("/login");
       } else {
         toast.error("Registration failed. Try again!");
-        console.log("Registration failed:", response.data.message);
         setError("Registration failed. Please try again.");
       }
     } catch (err) {
+      console.error("Registration error:", err.response?.data || err.message);
       toast.error("Registration failed. Try again!");
-      setError("An error occurred. Please register again.");
+      setError(err.response?.data?.message || "An error occurred. Please register again.");
     } finally {
       setLoading(false);
     }
@@ -60,7 +56,7 @@ const Registration = () => {
   return (
     <>
       <nav>
-        <Link className="navbar-brand fw-bold text-black d-flex justify-content-center m-3 " to="/">
+        <Link className="navbar-brand fw-bold text-black d-flex justify-content-center m-3" to="/">
           <h2>
             <button className="btn btn-light">Home</button>
           </h2>
@@ -131,10 +127,12 @@ const Registration = () => {
             </div>
           </form>
           <p>
-            Already have an account? <a href="/login">Login here</a>.
+            Already have an account? <Link to="/login">Login here</Link>.
           </p>
         </div>
       </div>
+
+      <Toaster position="top-center" reverseOrder={false} />
     </>
   );
 };

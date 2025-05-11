@@ -1,15 +1,12 @@
-
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from 'react-router-dom';
-
+import { Link, useNavigate } from "react-router-dom";
 import bootstrap from "bootstrap/dist/css/bootstrap.min.css";
-
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -18,12 +15,12 @@ const Login = () => {
 
     // Validate inputs
     if (!email || !password) {
-      setError('Please fill in all fields.');
+      setError("Please fill in all fields.");
       return;
     }
 
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       const response = await fetch("https://blogapp-server-wa7m.onrender.com/api/users/login", {
@@ -35,79 +32,81 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        
         toast.success("Login successful! 🎉");
         localStorage.setItem("name", data.user.name); // Save name to local storage
         localStorage.setItem("email", data.user.email); // Save email to local storage
         localStorage.setItem("_id", data.user._id); // Save _id to local storage
 
-        alert( 'Login successful! 🎉');
-
         const loggedInUserName = localStorage.getItem("name");
 
-        // navigate(`/profile/${loggedInUserName}`);
+        // Navigate to the user's profile
         navigate("/profile");
       } else {
         toast.error(data.message || "Invalid credentials!");
-        setError('Login failed. Please try again.');
+        setError("Login failed. Please try again.");
       }
     } catch (error) {
       toast.error("Something went wrong. Try again!");
-      setError('An error occurred. Please try again.');
-    }finally {
+      setError("An error occurred. Please try again.");
+    } finally {
       setLoading(false);
     }
   };
 
   return (
-
     <>
-
-    <nav>
-        <Link className="navbar-brand fw-bold text-black d-flex justify-content-center m-4 " to="/">
+      <nav>
+        <Link className="navbar-brand fw-bold text-black d-flex justify-content-center m-4" to="/">
           <h2>
             <button className="btn btn-light">Home</button>
           </h2>
         </Link>
       </nav>
 
-    <div className="d-flex justify-content-center align-items-center vh-75 bg-gradient" style={{ background: "linear-gradient(to right, #6a11cb, #2575fc)", padding: "20px" }}>
-        
-    <form onSubmit={handleLogin}>
-    <div className="card p-4 shadow-lg rounded" style={{ background: "rgba(255, 255, 255, 0.9)", width: "100%", maxWidth: "400px" }}>
-    {error && <p style={{ color: 'red' }}>{error}</p>}
-      <div className="card-header text-center bg-transparent border-0">
-           <h1 className="card-title text-primary fw-bold ">Login</h1>
-       </div>
+      <div
+        className="d-flex justify-content-center align-items-center vh-75 bg-gradient"
+        style={{ background: "linear-gradient(to right, #6a11cb, #2575fc)", padding: "20px" }}
+      >
+        <form onSubmit={handleLogin}>
+          <div
+            className="card p-4 shadow-lg rounded"
+            style={{ background: "rgba(255, 255, 255, 0.9)", width: "100%", maxWidth: "400px" }}
+          >
+            {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <input
-        type="email"
-        placeholder="Email"
-        className="form-control form-control-lg border-primary mb-3"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        className="form-control form-control-lg border-primary mb-3 "
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit" className="btn btn-primary w-100 btn-lg fw-bold shadow-sm mb-3" disabled={loading}>
-      {loading ? 'Loging in...' : 'Login'}
-      </button>
+            <div className="card-header text-center bg-transparent border-0">
+              <h1 className="card-title text-primary fw-bold">Login</h1>
+            </div>
 
-      <p>
-        Do not have an account? <a href="/register">Register here</a>.
-      </p>
+            <input
+              type="email"
+              placeholder="Email"
+              className="form-control form-control-lg border-primary mb-3"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              className="form-control form-control-lg border-primary mb-3"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="btn btn-primary w-100 btn-lg fw-bold shadow-sm mb-3"
+              disabled={loading}
+            >
+              {loading ? "Logging in..." : "Login"}
+            </button>
 
-      </div>  
-    </form>
-
-    </div>
-
-  </> 
+            <p>
+              Do not have an account? <Link to="/register">Register here</Link>.
+            </p>
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 

@@ -6,176 +6,210 @@ import Navbar from "../components/Navbar";
 export default function GlobalPage() {
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
+  const [loadingPosts, setLoadingPosts] = useState(true);
+  const [loadingUsers, setLoadingUsers] = useState(true);
+
+  const loggedInUserName = localStorage.getItem("name");
 
   useEffect(() => {
     axios
       .get("https://blogapp-server-wa7m.onrender.com/api/blogs")
-      // .get("http://localhost:4000/api/blogs")
-      .then((response) => setPosts(response.data))
-      .catch((error) => console.error("Error fetching posts:", error));
+      .then((res) => setPosts(res.data))
+      .catch((err) => console.error("Error fetching posts:", err))
+      .finally(() => setLoadingPosts(false));
   }, []);
 
   useEffect(() => {
     axios
       .get("https://blogapp-server-wa7m.onrender.com/api/users")
-      // .get("http://localhost:4000/api/users")
-      .then((response) => setUsers(response.data))
-      .catch((error) => console.error("Error fetching users:", error));
+      .then((res) => setUsers(res.data))
+      .catch((err) => console.error("Error fetching users:", err))
+      .finally(() => setLoadingUsers(false));
   }, []);
 
-  const loggedInUserName = localStorage.getItem("name");
-  const loggedInUserEmail = localStorage.getItem("email");
-
-  //  const getTimeAgo = (timestamp) => {
-
-  //   const secondsAgo = Math.floor((new Date() - new Date(timestamp)) / 1000);
-
-  //   if (secondsAgo < 60) return "Just now";
-  //   if (secondsAgo < 3600) return `${Math.floor(secondsAgo / 60)} minutes ago`;
-  //   if (secondsAgo < 86400) return `${Math.floor(secondsAgo / 3600)} hours ago`;
-  //   return `${Math.floor(secondsAgo / 86400)} days ago`;
-  //  };
+  const getTimeAgo = (timestamp) => {
+    const secondsAgo = Math.floor((new Date() - new Date(timestamp)) / 1000);
+    if (secondsAgo < 60) return "Just now";
+    if (secondsAgo < 3600) return `${Math.floor(secondsAgo / 60)} min ago`;
+    if (secondsAgo < 86400) return `${Math.floor(secondsAgo / 3600)} hr ago`;
+    return `${Math.floor(secondsAgo / 86400)} day(s) ago`;
+  };
 
   return (
     <div className="bg-light">
       <Navbar />
 
+      {/* Hero Header */}
       <header
-        className="bg-gradient text-white text-center header-global"
-        style={{ background: "linear-gradient(to right, #6a11cb, #2575fc)" }}
+        className="text-white text-center py-5"
+        style={{ background: "linear-gradient(to right, #000000, #2575fc)" }}
       >
-        <div className=" navbar-brand fw-bold">
-          <h3 className="card-title mb-1 animate">Hi {loggedInUserName} !</h3>
-          <h1 className="display-4 fw-bold navbar-brand fw-bold text-black">
-            Welcome to The Place of Great Blogs
-          </h1>
-          <h5 className="card-title text-black">
-            Discover amazing content and insights
-          </h5>
-        </div>
+        <h3 className="fw-bold animate">Hi {loggedInUserName} 👋</h3>
+        <h1 className="display-5 fw-bold">Welcome to the World of Blogs</h1>
+        <p className="lead">Discover insightful stories and creative minds</p>
       </header>
 
-      <div className="d-flex col-md-12">
-        <div className="container mb-3 col-md-3">
-          <h4 className="card-title text-black">Latest Creators-</h4>
-          <h6 className="card-title text-black mb-2">follow and read Blogs.</h6>
-          <div className="row mb-3">
-            {users.length > 0 ? (
-              users.map((user) => (
-                <div key={user._id} className="col-md-12 mb-4">
-                  <div className="card shadow-sm">
-                    <div className="card-body">
-                      <h5 className="card-title text-center">{user.name}</h5>
-                      {/* <p className="card-text">
-                        {user.bio.substring(0, 40)}...
-                      </p> */}
-                      <div>
-                        <div className="d-flex justify-content-center">
-                          <h5 className="text-center mx-1">
-                            <a
-                              className="text-decoration-none"
-                              href={user.instagram}
-                              target="_blank"
-                            >
-                              <i
-                              class="fa-brands fa-instagram"
-                            ></i>
-                            </a>
-                          </h5>
-                          <h5 className="text-center mx-1">
+      <div className="container my-4 d-flex flex-wrap">
+        {/* Left Column - Creators */}
+        <div className="col-md-4 mb-4 pe-md-3">
+          <h4 className="text-dark fw-bold">Latest Creators</h4>
+          <p className="text-muted">Follow them to read more amazing blogs.</p>
+
+          {loadingUsers ? (
+            <div className="text-center my-3 loader"></div>
+          ) : users.length === 0 ? (
+            <p className="text-muted">No creators found.</p>
+          ) : (
+            <>
+              {/* Mobile: Only 3 latest users */}
+              <div className="d-block d-md-none">
+                {users.slice(0, 2).map((user) => (
+                  <div key={user._id} className="card shadow-sm mb-3">
+                    <div className="card-body text-center">
+                      <h5 className="card-title fw-semibold">{user.name}</h5>
+                      <div className="mb-2 d-flex justify-content-center gap-3">
+                        {user.instagram && (
                           <a
-                              className="text-decoration-none"
-                              href={user.linkedin}
-                              target="_blank"
-                            >
-                              <i
-                              class="fa-brands fa-linkedin"
-                            ></i>
-                            </a>
-                          </h5>
-                        </div>
-                        {/* <p > Time : {getTimeAgo(user.timestamp)}</p> */}
-                        <Link
-                          to={`/profile/${user.name}`}
-                          className="btn btn-outline-primary w-100"
-                        >
-                          View profile
-                        </Link>
+                            href={user.instagram}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <i className="fa-brands fa-instagram fs-5 text-danger"></i>
+                          </a>
+                        )}
+                        {user.linkedin && (
+                          <a
+                            href={user.linkedin}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <i className="fa-brands fa-linkedin fs-5 text-primary"></i>
+                          </a>
+                        )}
                       </div>
+                      <Link
+                        to={`/profile/${user.name}`}
+                        className="btn btn-outline-primary btn-sm w-100"
+                      >
+                        View Profile
+                      </Link>
                     </div>
                   </div>
-                </div>
-              ))
-            ) : (
-              <>
-                <p></p>
-              </>
-            )}
-          </div>
+                ))}
+              </div>
 
-          <p className="text-black mt-3 my-3 mx-3">
-            You can also write your Blogs by
-            <Link to="/register" className="btn btn-primary mx-2">
-              Register
-            </Link>
-            or
-            <Link to="/login" className="btn btn-primary mx-2">
-              Login
-            </Link>
-          </p>
-          <p className="card-title text-black mb-3 mx-3 my-3">
-            & also excess some extra features.
-          </p>
+              {/* Desktop: Show all users */}
+              <div className="d-none d-md-block">
+                {users.map((user) => (
+                  <div key={user._id} className="card shadow-sm mb-3">
+                    <div className="card-body text-center">
+                      <h5 className="card-title fw-semibold">{user.name}</h5>
+                      <div className="mb-2 d-flex justify-content-center gap-3">
+                        {user.instagram && (
+                          <a
+                            href={user.instagram}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <i className="fa-brands fa-instagram fs-5 text-danger"></i>
+                          </a>
+                        )}
+                        {user.linkedin && (
+                          <a
+                            href={user.linkedin}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <i className="fa-brands fa-linkedin fs-5 text-primary"></i>
+                          </a>
+                        )}
+                      </div>
+                      <Link
+                        to={`/profile/${user.name}`}
+                        className="btn btn-outline-primary btn-sm w-100"
+                      >
+                        View Profile
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          <div className="mt-4 p-3 border rounded text-center bg-white">
+            <p className="text-black mb-2">Want to write your own blogs?</p>
+            <div>
+              <Link to="/register" className="btn btn-success btn-sm mx-1">
+                Register
+              </Link>
+              <Link to="/login" className="btn btn-outline-dark btn-sm mx-1">
+                Login
+              </Link>
+            </div>
+            <p className="small text-muted mt-2">
+              Unlock extra features once logged in.
+            </p>
+          </div>
         </div>
 
-        <div className="container mb-3 col-md-8">
-          <h5 className="card-title text-black mb-2 mx-3">Latest Blogs</h5>
-
-          <div className="row mb-3">
-            {posts.length > 0 ? (
+        {/* Right Column - Blogs */}
+        <div className="col-md-8">
+          <h4 className="text-dark fw-bold mb-3">Latest Blogs</h4>
+          <div className="row">
+            {loadingPosts ? (
+              <div className="text-center w-100 loader"></div>
+            ) : posts.length === 0 ? (
+              <p className="text-muted">No blogs available.</p>
+            ) : (
               posts.map((post) => (
                 <div key={post._id} className="col-md-6 mb-4">
-                  <div className="card shadow-sm">
-                    <div className="card-body">
-                      <h5 className="card-title description">
-                        {post.title.substring(0, 40)}...
+                  <div className="card shadow-sm h-100">
+                    <div className="card-body d-flex flex-column">
+                      <h5 className="card-title text-primary fw-semibold">
+                        {post.title.length > 40
+                          ? post.title.substring(0, 40) + "..."
+                          : post.title}
                       </h5>
-                      <p className="card-text description">
-                        {post.description.substring(0, 45)}...
+                      <p className="card-text text-muted mb-2">
+                        {post.description.length > 60
+                          ? post.description.substring(0, 60) + "..."
+                          : post.description}
                       </p>
-                      <div>
-                        <Link
-                          className="btn btn-light mb-1"
-                          to={`/profile/${post.userName}`}
-                        >
-                          <i class="fa-solid fa-pen-nib"></i> Author : {""}
-                          {post.userName}
-                        </Link>
-                        {/* <p > Time : {getTimeAgo(post.timestamp)}</p> */}
-                        <Link
-                          to={`/blog/${post._id}`}
-                          className="btn btn-outline-secondary w-100"
-                        >
-                          Read More
-                          <i class="fa-solid fa-book-open fa-flip"></i>
-                        </Link>
-                      </div>
+
+                      <Link
+                        to={`/profile/${post.userName}`}
+                        className="btn btn-sm btn-light text-start mb-2"
+                      >
+                        <i className="fa-solid fa-user-pen me-1"></i>
+                        Author: {post.userName}
+                      </Link>
+
+                      <p className="text-muted small mb-2">
+                        {getTimeAgo(post.timestamp)}
+                      </p>
+
+                      <Link
+                        to={`/blog/${post._id}`}
+                        className="btn btn-outline-secondary btn-sm mt-auto"
+                      >
+                        Read More{" "}
+                        <i className="fa-solid fa-book-open ms-1"></i>
+                      </Link>
                     </div>
                   </div>
                 </div>
               ))
-            ) : (
-              <>
-                loading Blogs...<div class="loader"></div>
-              </>
             )}
           </div>
         </div>
       </div>
 
-      <footer className="bg-dark text-white text-center py-3">
-        <p className="mb-0 ">
-          &copy; 2025 Blog<i class="fa-solid fa-blog"></i>. All rights reserved.
+      {/* Footer */}
+      <footer className="bg-dark text-white text-center py-3 mt-5">
+        <p className="mb-0">
+          &copy; 2025 Blog <i className="fa-solid fa-blog"></i>. All rights
+          reserved.
         </p>
       </footer>
     </div>

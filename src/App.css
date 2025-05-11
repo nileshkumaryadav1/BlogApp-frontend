@@ -1,51 +1,104 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Outfit', sans-serif;
-}
-.description{
-    text-align: justify;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Outfit', sans-serif;
 }
 
-/* height of create blog container */
-.vh-7{
-    height: 80vh;
+/* Text formatting */
+.description {
+  text-align: justify;
+  color: #333;
 }
 
-/* Color change animation of username */
+/* Custom viewport height utility */
+.vh-7 {
+  height: 80vh;
+}
+
+/* Header Section */
+.header-global {
+  padding: 40px 0;
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  color: white;
+}
+
+/* Animated text effect */
 @keyframes colorchange {
-    0% {color: green;}
-    30%{color: orangered;}
-    50%{color: orange;}
-    80%{color: red;}
-    100% {color: blue;}
+  0% { color: green; }
+  30% { color: orangered; }
+  50% { color: orange; }
+  80% { color: red; }
+  100% { color: blue; }
 }
 
-.animate{
-    color: red;
-    animation: colorchange 4s linear infinite;
+.animate {
+  animation: colorchange 4s linear infinite;
+  font-weight: 600;
 }
 
-/* header-global */
-.header-global{
-    padding: 40px 0;
+/* Loader animation */
+.loader {
+  height: 30px;
+  width: 30px;
+  padding: 5px;
+  border: 4px solid blue;
+  border-top: 4px solid wheat;
+  border-radius: 50%;
+  animation: animateloader 1.7s linear infinite;
+  margin: 0 auto;
 }
 
-/* loading animation */
-.loader{
-    height: 30px;
-    width: 30px;
-    padding: 5px;
-    border: 4px solid blue;
-    border-radius: 50%;
-    border-top: 4px solid wheat;
-    animation: animateloader 1.7s linear 0s infinite normal ;
+@keyframes animateloader {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-@keyframes animateloader{
-    from{transform: rotate(0deg);}
-    to{transform: rotate(360deg);}
+/* Card Styling */
+.card {
+  border: none;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+}
+
+/* Buttons */
+.btn-outline-secondary {
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #2575fc;
+  color: white;
+}
+
+/* Responsive fix for smaller screens */
+@media (max-width: 768px) {
+  .header-global {
+    text-align: center;
+    padding: 30px 10px;
+  }
+
+  .card .btn {
+    font-size: 0.9rem;
+  }
+}
+
+/* Footer */
+footer {
+  background-color: #111;
+  color: #eee;
+  font-size: 0.9rem;
+}
+
+footer i {
+  color: #fbbc05;
 }
