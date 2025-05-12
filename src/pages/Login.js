@@ -57,7 +57,7 @@ const Login = () => {
   };
 
   return (
-    <section className="vh-100">
+    <section className="">
       <div
         className="d-flex justify-content-center align-items-center vh-75 bg-gradient"
         style={{

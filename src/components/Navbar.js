@@ -5,11 +5,29 @@ import "../css/Navbar.css";
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     const userEmail = localStorage.getItem("email");
     setIsLoggedIn(!!userEmail);
   }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY < 50) {
+        setVisible(true);
+      } else if (window.scrollY > lastScrollY) {
+        setVisible(false); // scrolling down
+      } else {
+        setVisible(true); // scrolling up
+      }
+      setLastScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   const handleLogout = () => {
     localStorage.removeItem("email");
@@ -21,12 +39,15 @@ const Navbar = () => {
   };
 
   const loggedInUserName = localStorage.getItem("name");
-
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <>
-      <nav className="navbar navbar-expand-lg bg-info shadow-sm py-3 px-4 d-flex justify-content-between align-items-center">
+    <section>
+      <nav
+        className={`navbar navbar-expand-lg bg-info shadow-sm py-3 px-4 d-flex justify-content-between align-items-center fixed-top transition-navbar ${
+          visible ? "show-navbar" : "hide-navbar"
+        }`}
+      >
         <Link className="navbar-brand text-white fw-bold fs-4" to="/">
           <i className="fa-solid fa-blog me-2"></i>Blog
         </Link>
@@ -55,7 +76,6 @@ const Navbar = () => {
             Blogs
           </Link>
 
-          {/* register/login/profile/dashboard/logout */}
           {isLoggedIn && (
             <Link
               className="text-white text-decoration-none fw-semibold"
@@ -64,6 +84,7 @@ const Navbar = () => {
               Profile
             </Link>
           )}
+
           {!isLoggedIn ? (
             <>
               <Link className="btn btn-outline-light" to="/register">
@@ -81,7 +102,7 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Fullscreen Sliding Mobile Menu */}
+      {/* Mobile Menu */}
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
         <div className="mobile-menu-header d-flex justify-content-between align-items-center px-4 py-3">
           <h5 className="text-white m-0">Menu</h5>
@@ -134,7 +155,7 @@ const Navbar = () => {
           )}
         </ul>
       </div>
-    </>
+    </section>
   );
 };
 

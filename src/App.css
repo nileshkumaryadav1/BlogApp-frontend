@@ -1,10 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
+}
+
+.main{
+  margin-top: 78px;
 }
 
 /* Text formatting */
@@ -27,11 +31,21 @@
 
 /* Animated text effect */
 @keyframes colorchange {
-  0% { color: green; }
-  30% { color: orangered; }
-  50% { color: orange; }
-  80% { color: red; }
-  100% { color: blue; }
+  0% {
+    color: green;
+  }
+  30% {
+    color: orangered;
+  }
+  50% {
+    color: orange;
+  }
+  80% {
+    color: red;
+  }
+  100% {
+    color: blue;
+  }
 }
 
 .animate {
@@ -52,8 +66,12 @@
 }
 
 @keyframes animateloader {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Card Styling */

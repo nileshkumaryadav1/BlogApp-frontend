@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.css";
 
 import GlobalPage from "./pages/Global";
 import RegistrationPage from "./pages/Register";
@@ -23,81 +24,83 @@ function App() {
       {/* Navbar */}
       <Navbar />
 
-      {/* Routes */}
-      <Routes>
-        {/* Home page */}
-        <Route path="/" element={<GlobalPage />} />
+      <div className="main">
+        {/* Routes */}
+        <Routes>
+          {/* Home page */}
+          <Route path="/" element={<GlobalPage />} />
 
-        {/* All Blog page */}
-        <Route path="/blogs" element={<AllBlog />} />
+          {/* All Blog page */}
+          <Route path="/blogs" element={<AllBlog />} />
 
-        {/* Full Blog page */}
-        <Route path="/blog/:id" element={<FullBlog />} />
+          {/* Full Blog page */}
+          <Route path="/blog/:id" element={<FullBlog />} />
 
-        {/* All User page */}
-        <Route path="/users" element={<AllUser />} />
+          {/* All User page */}
+          <Route path="/users" element={<AllUser />} />
 
-        {/* User Profile page */}
-        <Route path="/profile/:name" element={<UserProfile />} />
+          {/* User Profile page */}
+          <Route path="/profile/:name" element={<UserProfile />} />
 
-        {/* Auth routes */}
-        {/* User Registration */}
-        <Route
-          path="/register"
-          element={
-            <ProtectedAuthRoute>
-              <RegistrationPage />
-            </ProtectedAuthRoute>
-          }
-        />
-        {/* User Login */}
-        <Route
-          path="/login"
-          element={
-            <ProtectedAuthRoute>
-              <LoginPage />
-            </ProtectedAuthRoute>
-          }
-        />
-        {/* User Dashboard */}
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <DashboardPage />
-            </ProtectedRoute>
-          }
-        />
-        {/* Edit User */}
-        <Route
-          path="/edit-user/:id"
-          element={
-            <ProtectedRoute>
-              <EditUser />
-            </ProtectedRoute>
-          }
-        />
+          {/* Auth routes */}
+          {/* User Registration */}
+          <Route
+            path="/register"
+            element={
+              <ProtectedAuthRoute>
+                <RegistrationPage />
+              </ProtectedAuthRoute>
+            }
+          />
+          {/* User Login */}
+          <Route
+            path="/login"
+            element={
+              <ProtectedAuthRoute>
+                <LoginPage />
+              </ProtectedAuthRoute>
+            }
+          />
+          {/* User Dashboard */}
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          {/* Edit User */}
+          <Route
+            path="/edit-user/:id"
+            element={
+              <ProtectedRoute>
+                <EditUser />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* Protected routes - Blog CRUD */}
-        {/* Create Blog */}
-        <Route
-          path="/create/blog/"
-          element={
-            <ProtectedRoute>
-              <CreateBlog />
-            </ProtectedRoute>
-          }
-        />
-        {/* Edit Blog */}
-        <Route
-          path="/edit-blog/:id"
-          element={
-            <ProtectedRoute>
-              <EditBlog />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+          {/* Protected routes - Blog CRUD */}
+          {/* Create Blog */}
+          <Route
+            path="/create/blog/"
+            element={
+              <ProtectedRoute>
+                <CreateBlog />
+              </ProtectedRoute>
+            }
+          />
+          {/* Edit Blog */}
+          <Route
+            path="/edit-blog/:id"
+            element={
+              <ProtectedRoute>
+                <EditBlog />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </div>
 
       {/* Footer */}
       <Footer />
