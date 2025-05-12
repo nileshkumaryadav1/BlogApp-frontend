@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Button, Container, Card, Row, Col, Navbar } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "react-toastify/dist/ReactToastify.css";
-import UserProfile from "./UserProfile";
 
 const DashboardPage = () => {
   const [posts, setPosts] = useState([]);
@@ -27,7 +25,7 @@ const DashboardPage = () => {
       }
     };
     fetchUserProfile();
-  }, [name]);
+  }, [loggedInUserName]);
 
   useEffect(() => {
     axios
@@ -40,7 +38,7 @@ const DashboardPage = () => {
       })
       .catch((error) => {
         console.error("Error fetching posts:", error);
-        toast.error("Failed to load your posts. Please try again later.");
+        alert("Failed to load your posts. Please try again later.");
         setLoading(false);
       });
   }, [loggedInUserEmail]);
@@ -57,10 +55,10 @@ const DashboardPage = () => {
           `https://blogapp-server-wa7m.onrender.com/api/blogs/${id}`
         );
         setPosts(posts.filter((post) => post._id !== id)); // Update state after deletion
-        toast.success("Post deleted successfully!");
+        alert("Post deleted successfully!");
       } catch (err) {
         console.error(err);
-        toast.error("Error deleting post.");
+        alert("Error deleting post.");
       }
     }
   };
@@ -75,12 +73,12 @@ const DashboardPage = () => {
         await axios.delete(
           `https://blogapp-server-wa7m.onrender.com/api/users/${id}`
         );
-        toast.success("Your account has been deleted successfully.");
+        alert("Your account has been deleted successfully.");
         localStorage.clear();
         navigate("/");
       } catch (err) {
         console.error(err);
-        toast.error("Error deleting account.");
+        alert("Error deleting account.");
       }
     }
   };
