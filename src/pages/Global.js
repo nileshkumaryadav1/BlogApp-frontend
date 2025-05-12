@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 
 export default function GlobalPage() {
   const [posts, setPosts] = useState([]);
@@ -35,10 +34,34 @@ export default function GlobalPage() {
     return `${Math.floor(secondsAgo / 86400)} day(s) ago`;
   };
 
+  const CreatorCard = ({ user }) => (
+    <div key={user._id} className="card shadow-sm mb-3">
+      <div className="card-body text-center">
+        <h5 className="card-title fw-semibold">{user.name}</h5>
+        <div className="mb-2 d-flex justify-content-center gap-3">
+          {user.instagram && (
+            <a href={user.instagram} target="_blank" rel="noreferrer">
+              <i className="fa-brands fa-instagram fs-5 text-danger"></i>
+            </a>
+          )}
+          {user.linkedin && (
+            <a href={user.linkedin} target="_blank" rel="noreferrer">
+              <i className="fa-brands fa-linkedin fs-5 text-primary"></i>
+            </a>
+          )}
+        </div>
+        <Link
+          to={`/profile/${user.name}`}
+          className="btn btn-outline-primary btn-sm w-100"
+        >
+          View Profile
+        </Link>
+      </div>
+    </div>
+  );
+
   return (
     <div className="bg-light">
-      <Navbar />
-
       {/* Hero Header */}
       <header
         className="text-white text-center py-5"
@@ -49,10 +72,15 @@ export default function GlobalPage() {
         <p className="lead">Discover insightful stories and creative minds</p>
       </header>
 
-      <div className="container my-4 d-flex flex-wrap">
+      <div className="container mt-4 d-flex flex-wrap">
         {/* Left Column - Creators */}
         <div className="col-md-4 mb-4 pe-md-3">
-          <h4 className="text-dark fw-bold">Latest Creators</h4>
+          <h4 className="text-dark fw-bold">
+            Latest Creators<span className="text-primary">.</span>
+          </h4>
+          <Link to="/users" className="text-primary">
+            View All Creators
+          </Link>
           <p className="text-muted">Follow them to read more amazing blogs.</p>
 
           {loadingUsers ? (
@@ -61,82 +89,23 @@ export default function GlobalPage() {
             <p className="text-muted">No creators found.</p>
           ) : (
             <>
-              {/* Mobile: Only 3 latest users */}
+              {/* Mobile View: Show 2 */}
               <div className="d-block d-md-none">
                 {users.slice(0, 2).map((user) => (
-                  <div key={user._id} className="card shadow-sm mb-3">
-                    <div className="card-body text-center">
-                      <h5 className="card-title fw-semibold">{user.name}</h5>
-                      <div className="mb-2 d-flex justify-content-center gap-3">
-                        {user.instagram && (
-                          <a
-                            href={user.instagram}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <i className="fa-brands fa-instagram fs-5 text-danger"></i>
-                          </a>
-                        )}
-                        {user.linkedin && (
-                          <a
-                            href={user.linkedin}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <i className="fa-brands fa-linkedin fs-5 text-primary"></i>
-                          </a>
-                        )}
-                      </div>
-                      <Link
-                        to={`/profile/${user.name}`}
-                        className="btn btn-outline-primary btn-sm w-100"
-                      >
-                        View Profile
-                      </Link>
-                    </div>
-                  </div>
+                  <CreatorCard key={user._id} user={user} />
                 ))}
               </div>
 
-              {/* Desktop: Show all users */}
+              {/* Desktop View: Show all */}
               <div className="d-none d-md-block">
                 {users.map((user) => (
-                  <div key={user._id} className="card shadow-sm mb-3">
-                    <div className="card-body text-center">
-                      <h5 className="card-title fw-semibold">{user.name}</h5>
-                      <div className="mb-2 d-flex justify-content-center gap-3">
-                        {user.instagram && (
-                          <a
-                            href={user.instagram}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <i className="fa-brands fa-instagram fs-5 text-danger"></i>
-                          </a>
-                        )}
-                        {user.linkedin && (
-                          <a
-                            href={user.linkedin}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <i className="fa-brands fa-linkedin fs-5 text-primary"></i>
-                          </a>
-                        )}
-                      </div>
-                      <Link
-                        to={`/profile/${user.name}`}
-                        className="btn btn-outline-primary btn-sm w-100"
-                      >
-                        View Profile
-                      </Link>
-                    </div>
-                  </div>
+                  <CreatorCard key={user._id} user={user} />
                 ))}
               </div>
             </>
           )}
 
+          {/* CTA Box */}
           <div className="mt-4 p-3 border rounded text-center bg-white">
             <p className="text-black mb-2">Want to write your own blogs?</p>
             <div>
@@ -155,10 +124,13 @@ export default function GlobalPage() {
 
         {/* Right Column - Blogs */}
         <div className="col-md-8">
-          <h4 className="text-dark fw-bold mb-3">Latest Blogs</h4>
+          <h4 className="text-dark fw-bold">Latest Blogs</h4>
+          <Link to="/blogs" className="text-primary mb-2 d-inline-block">
+            View All Blogs
+          </Link>
           <div className="row">
             {loadingPosts ? (
-              <div className="text-center w-100 loader"></div>
+              <div className="text-center w-100 py-4">Loading...</div>
             ) : posts.length === 0 ? (
               <p className="text-muted">No blogs available.</p>
             ) : (
@@ -193,8 +165,7 @@ export default function GlobalPage() {
                         to={`/blog/${post._id}`}
                         className="btn btn-outline-secondary btn-sm mt-auto"
                       >
-                        Read More{" "}
-                        <i className="fa-solid fa-book-open ms-1"></i>
+                        Read More <i className="fa-solid fa-book-open ms-1"></i>
                       </Link>
                     </div>
                   </div>
@@ -204,14 +175,6 @@ export default function GlobalPage() {
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="bg-dark text-white text-center py-3 mt-5">
-        <p className="mb-0">
-          &copy; 2025 Blog <i className="fa-solid fa-blog"></i>. All rights
-          reserved.
-        </p>
-      </footer>
     </div>
   );
 }

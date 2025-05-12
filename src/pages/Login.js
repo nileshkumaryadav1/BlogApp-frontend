@@ -23,11 +23,14 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await fetch("https://blogapp-server-wa7m.onrender.com/api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "https://blogapp-server-wa7m.onrender.com/api/users/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       const data = await response.json();
 
@@ -54,23 +57,22 @@ const Login = () => {
   };
 
   return (
-    <>
-      <nav>
-        <Link className="navbar-brand fw-bold text-black d-flex justify-content-center m-4" to="/">
-          <h2>
-            <button className="btn btn-light">Home</button>
-          </h2>
-        </Link>
-      </nav>
-
+    <section className="vh-100">
       <div
         className="d-flex justify-content-center align-items-center vh-75 bg-gradient"
-        style={{ background: "linear-gradient(to right, #6a11cb, #2575fc)", padding: "20px" }}
+        style={{
+          background: "linear-gradient(to right, #6a11cb, #2575fc)",
+          padding: "20px",
+        }}
       >
         <form onSubmit={handleLogin}>
           <div
             className="card p-4 shadow-lg rounded"
-            style={{ background: "rgba(255, 255, 255, 0.9)", width: "100%", maxWidth: "400px" }}
+            style={{
+              background: "rgba(255, 255, 255, 0.9)",
+              width: "100%",
+              maxWidth: "400px",
+            }}
           >
             {error && <p style={{ color: "red" }}>{error}</p>}
 
@@ -80,6 +82,7 @@ const Login = () => {
 
             <input
               type="email"
+              name="email"
               placeholder="Email"
               className="form-control form-control-lg border-primary mb-3"
               value={email}
@@ -106,7 +109,7 @@ const Login = () => {
           </div>
         </form>
       </div>
-    </>
+    </section>
   );
 };
 

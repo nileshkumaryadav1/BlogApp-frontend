@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import { Toaster } from "react-hot-toast";
 
 import GlobalPage from "./pages/Global";
 import RegistrationPage from "./pages/Register";
@@ -13,19 +12,36 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import EditBlog from "./pages/EditBlog";
 import UserProfile from "./pages/UserProfile";
 import EditUser from "./pages/EditUser";
-
-// testing
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import AllBlog from "./pages/AllBlog";
+import AllUser from "./pages/AllUser";
 
 function App() {
   return (
     <Router>
-      <Routes>
-        {/* <Toaster position="top-right" reverseOrder={false} />  */}
+      {/* Navbar */}
+      <Navbar />
 
+      {/* Routes */}
+      <Routes>
+        {/* Home page */}
         <Route path="/" element={<GlobalPage />} />
 
+        {/* All Blog page */}
+        <Route path="/blogs" element={<AllBlog />} />
+
+        {/* Full Blog page */}
+        <Route path="/blog/:id" element={<FullBlog />} />
+
+        {/* All User page */}
+        <Route path="/users" element={<AllUser />} />
+
+        {/* User Profile page */}
         <Route path="/profile/:name" element={<UserProfile />} />
 
+        {/* Auth routes */}
+        {/* User Registration */}
         <Route
           path="/register"
           element={
@@ -34,7 +50,7 @@ function App() {
             </ProtectedAuthRoute>
           }
         />
-
+        {/* User Login */}
         <Route
           path="/login"
           element={
@@ -43,7 +59,7 @@ function App() {
             </ProtectedAuthRoute>
           }
         />
-
+        {/* User Dashboard */}
         <Route
           path="/profile"
           element={
@@ -52,27 +68,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        <Route
-          path="/create/blog/"
-          element={
-            <ProtectedRoute>
-              <CreateBlog />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route path="/blog/:id" element={<FullBlog />} />
-
-        <Route
-          path="/edit-blog/:id"
-          element={
-            <ProtectedRoute>
-              <EditBlog />
-            </ProtectedRoute>
-          }
-        />
-
+        {/* Edit User */}
         <Route
           path="/edit-user/:id"
           element={
@@ -81,7 +77,30 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* Protected routes - Blog CRUD */}
+        {/* Create Blog */}
+        <Route
+          path="/create/blog/"
+          element={
+            <ProtectedRoute>
+              <CreateBlog />
+            </ProtectedRoute>
+          }
+        />
+        {/* Edit Blog */}
+        <Route
+          path="/edit-blog/:id"
+          element={
+            <ProtectedRoute>
+              <EditBlog />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
+
+      {/* Footer */}
+      <Footer />
     </Router>
   );
 }

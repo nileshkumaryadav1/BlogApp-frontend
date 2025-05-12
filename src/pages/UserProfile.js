@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const UserProfile = () => {
@@ -37,12 +36,11 @@ const UserProfile = () => {
     fetchUserBlog();
   }, [name]);
 
-  if (!users || !users.name) return <h2 className="text-center mt-5">Loading...</h2>;
+  if (!users || !users.name)
+    return <h2 className="text-center mt-5">Loading...</h2>;
 
   return (
-    <>
-      <Navbar />
-
+    <section>
       <div className="container mt-4">
         <div className="card mx-auto text-center" style={{ maxWidth: "600px" }}>
           <h2 className="pt-3">
@@ -103,8 +101,12 @@ const UserProfile = () => {
                 <div key={blog._id} className="col-md-6 col-lg-4 mb-4">
                   <div className="card h-100 shadow-sm">
                     <div className="card-body d-flex flex-column">
-                      <h5 className="card-title">{blog.title.slice(0, 40)}...</h5>
-                      <p className="card-text">{blog.description.slice(0, 60)}...</p>
+                      <h5 className="card-title">
+                        {blog.title.slice(0, 40)}...
+                      </h5>
+                      <p className="card-text">
+                        {blog.description.slice(0, 60)}...
+                      </p>
                       <div className="mt-auto">
                         <button className="btn btn-light btn-sm mb-2">
                           <i className="fa-solid fa-pen-nib me-1"></i>
@@ -114,7 +116,8 @@ const UserProfile = () => {
                           to={`/blog/${blog._id}`}
                           className="btn btn-outline-secondary w-100"
                         >
-                          Read More <i className="fa-solid fa-book-open ms-1"></i>
+                          Read More{" "}
+                          <i className="fa-solid fa-book-open ms-1"></i>
                         </Link>
                       </div>
                     </div>
@@ -122,12 +125,14 @@ const UserProfile = () => {
                 </div>
               ))
             ) : (
-              <p className="fst-italic">{users.name} has not created any blogs yet.</p>
+              <p className="fst-italic">
+                {users.name} has not created any blogs yet.
+              </p>
             )}
           </div>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 

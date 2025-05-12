@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import "../css/Navbar.css";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const userEmail = localStorage.getItem("email");
@@ -14,61 +16,125 @@ const Navbar = () => {
     localStorage.removeItem("name");
     localStorage.removeItem("_id");
     setIsLoggedIn(false);
+    setMenuOpen(false);
     window.location.reload();
   };
 
   const loggedInUserName = localStorage.getItem("name");
 
+  const closeMenu = () => setMenuOpen(false);
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-info px-4 py-3 shadow-sm">
-      <Link className="navbar-brand d-flex align-items-center text-white" to="/">
-        <h4 className="mb-0">
-          <i className="fa-solid fa-blog fa-bounce me-2"></i>Blog
-        </h4>
-        <button className="btn btn-light btn-sm ms-3">Home</button>
-      </Link>
+    <>
+      <nav className="navbar navbar-expand-lg bg-info shadow-sm py-3 px-4 d-flex justify-content-between align-items-center">
+        <Link className="navbar-brand text-white fw-bold fs-4" to="/">
+          <i className="fa-solid fa-blog me-2"></i>Blog
+        </Link>
 
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
+        <button
+          className="btn text-white d-lg-none fs-4"
+          onClick={() => setMenuOpen(true)}
+        >
+          <i className="fa-solid fa-bars"></i>
+        </button>
 
-      <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
-        {!isLoggedIn ? (
-          <ul className="navbar-nav d-flex align-items-center gap-2">
-            <li className="nav-item">
-              <Link to="/register" className="btn btn-outline-light">
-                <i className="fa-solid fa-user-plus me-1"></i> Register
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/login" className="btn btn-light">
-                <i className="fa-solid fa-right-to-bracket me-1"></i> Login
-              </Link>
-            </li>
-          </ul>
-        ) : (
-          <div className="d-flex align-items-center gap-2">
+        <div className="d-none d-lg-flex gap-3 align-items-center">
+          <Link className="text-white text-decoration-none fw-semibold" to="/">
+            Home
+          </Link>
+          <Link
+            className="text-white text-decoration-none fw-semibold"
+            to="/users"
+          >
+            Users
+          </Link>
+          <Link
+            className="text-white text-decoration-none fw-semibold"
+            to="/blogs"
+          >
+            Blogs
+          </Link>
+
+          {/* register/login/profile/dashboard/logout */}
+          {isLoggedIn && (
             <Link
-              className="btn btn-light"
+              className="text-white text-decoration-none fw-semibold"
               to={`/profile/${loggedInUserName}`}
             >
-              <i className="fa-regular fa-user me-1"></i> Profile
+              Profile
             </Link>
+          )}
+          {!isLoggedIn ? (
+            <>
+              <Link className="btn btn-outline-light" to="/register">
+                Register
+              </Link>
+              <Link className="btn btn-light" to="/login">
+                Login
+              </Link>
+            </>
+          ) : (
             <button className="btn btn-danger" onClick={handleLogout}>
-              <i className="fa-solid fa-arrow-right-from-bracket me-1"></i> Logout
+              Logout
             </button>
-          </div>
-        )}
+          )}
+        </div>
+      </nav>
+
+      {/* Fullscreen Sliding Mobile Menu */}
+      <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
+        <div className="mobile-menu-header d-flex justify-content-between align-items-center px-4 py-3">
+          <h5 className="text-white m-0">Menu</h5>
+          <button className="btn text-white fs-4" onClick={closeMenu}>
+            <i className="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <ul className="list-unstyled px-4 mt-4">
+          <li>
+            <Link onClick={closeMenu} to="/">
+              🏠 Home
+            </Link>
+          </li>
+          <li>
+            <Link onClick={closeMenu} to="/users">
+              👥 Users
+            </Link>
+          </li>
+          <li>
+            <Link onClick={closeMenu} to="/blogs">
+              📝 Blogs
+            </Link>
+          </li>
+          {isLoggedIn && (
+            <li>
+              <Link onClick={closeMenu} to={`/profile/${loggedInUserName}`}>
+                🙍‍♂️ Profile
+              </Link>
+            </li>
+          )}
+          {!isLoggedIn ? (
+            <>
+              <li>
+                <Link onClick={closeMenu} to="/register">
+                  🆕 Register
+                </Link>
+              </li>
+              <li>
+                <Link onClick={closeMenu} to="/login">
+                  🔐 Login
+                </Link>
+              </li>
+            </>
+          ) : (
+            <li>
+              <button className="btn btn-danger mt-2" onClick={handleLogout}>
+                🚪 Logout
+              </button>
+            </li>
+          )}
+        </ul>
       </div>
-    </nav>
+    </>
   );
 };
 

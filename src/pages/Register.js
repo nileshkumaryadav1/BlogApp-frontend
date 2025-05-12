@@ -54,15 +54,7 @@ const Registration = () => {
   };
 
   return (
-    <>
-      <nav>
-        <Link className="navbar-brand fw-bold text-black d-flex justify-content-center m-3" to="/">
-          <h2>
-            <button className="btn btn-light">Home</button>
-          </h2>
-        </Link>
-      </nav>
-
+    <section>
       <div
         className="d-flex justify-content-center align-items-center vh-75 bg-gradient"
         style={{
@@ -88,6 +80,7 @@ const Registration = () => {
                 <label>Name:</label>
                 <input
                   type="text"
+                  name="name"
                   value={name}
                   className="form-control form-control-lg border-primary mb-1"
                   onChange={(e) => setName(e.target.value)}
@@ -99,6 +92,7 @@ const Registration = () => {
                 <label>Email:</label>
                 <input
                   type="email"
+                  name="email"
                   value={email}
                   className="form-control form-control-lg border-primary mb-1"
                   onChange={(e) => setEmail(e.target.value)}
@@ -133,7 +127,7 @@ const Registration = () => {
       </div>
 
       <Toaster position="top-center" reverseOrder={false} />
-    </>
+    </section>
   );
 };
 
