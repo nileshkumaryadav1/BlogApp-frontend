@@ -31,14 +31,14 @@ const CreateBlog = () => {
         {
           title,
           description,
-          loggedInUserName,
-          loggedInUserEmail,
           image,
+          userName: loggedInUserName,
+          userEmail: loggedInUserEmail,
         }
       );
 
       // when successful blog created response
-      if (response.status === 200) {
+      if (response.status === 201) {
         alert("Blog created successful! 🎉");
         // forward to profile page after sumbit
         navigate("/profile");
@@ -99,11 +99,10 @@ const CreateBlog = () => {
             <div>
               <label>Write about you today's Blog...</label>
               <textarea
-                class="form-control form-control form-control-lg border-primary mb-4 w-100"
                 rows="3"
                 type="text"
                 value={description}
-                className="form-control form-control-lg border-primary mb-4 w-100"
+                className="form-control form-control border-primary mb-4"
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Start writing here..."
                 required
