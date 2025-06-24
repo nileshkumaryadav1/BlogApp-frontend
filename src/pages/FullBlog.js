@@ -90,8 +90,13 @@ export default function FullBlog() {
             <img
               src={blog.image}
               alt={blog.title}
-              className="img-fluid mb-4"
-              style={{ maxHeight: "400px", objectFit: "cover" }}
+              className="img-fluid rounded shadow-sm mb-3"
+              style={{
+                width: "100%",
+                maxHeight: "300px",
+                objectFit: "cover",
+                borderRadius: "12px",
+              }}
             />
 
             <p
