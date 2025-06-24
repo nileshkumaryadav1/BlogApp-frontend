@@ -25,11 +25,34 @@ function Footer() {
           <div className="col-md-4">
             <h5 className="fw-bold mb-3">Quick Links</h5>
             <ul className="list-unstyled d-flex flex-column gap-2">
-              <li><Link className="text-white text-decoration-none" to="/">🏠 Home</Link></li>
-              <li><Link className="text-white text-decoration-none" to="/blogs">📝 Blogs</Link></li>
-              <li><Link className="text-white text-decoration-none" to="/users">👥 Users</Link></li>
-              <li><Link className="text-white text-decoration-none" to="/register">🆕 Register</Link></li>
-              <li><Link className="text-white text-decoration-none" to="/login">🔐 Login</Link></li>
+              <li>
+                <Link className="text-white text-decoration-none" to="/">
+                  🏠 Home
+                </Link>
+              </li>
+              <li>
+                <Link className="text-white text-decoration-none" to="/blogs">
+                  📝 Blogs
+                </Link>
+              </li>
+              <li>
+                <Link className="text-white text-decoration-none" to="/users">
+                  👥 Users
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="text-white text-decoration-none"
+                  to="/register"
+                >
+                  🆕 Register
+                </Link>
+              </li>
+              <li>
+                <Link className="text-white text-decoration-none" to="/login">
+                  🔐 Login
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -69,10 +92,7 @@ function Footer() {
               >
                 <i className="fab fa-linkedin"></i>
               </a>
-              <a
-                href="mailto:support@blog.com"
-                className="text-white fs-4"
-              >
+              <a href="mailto:support@blog.com" className="text-white fs-4">
                 <i className="fa-solid fa-envelope"></i>
               </a>
             </div>
@@ -84,9 +104,22 @@ function Footer() {
 
         {/* Bottom Copyright */}
         <div className="text-center">
-          <p className="mb-0 small">
-            &copy; 2025 Blog <i className="fa-solid fa-blog"></i>. All rights reserved.
+          <p className="mb-1">
+            &copy; 2025 <strong>Blog</strong>{" "}
+            <i className="fa-solid fa-blog fa-beat text-danger"></i>. All rights
+            reserved.
           </p>
+          <div className="d-flex justify-content-center gap-3 mt-2">
+            <a href="https://twitter.com" target="_blank" rel="noreferrer">
+              <i className="fab fa-twitter text-primary fs-5"></i>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noreferrer">
+              <i className="fab fa-linkedin text-primary fs-5"></i>
+            </a>
+            <a href="https://github.com" target="_blank" rel="noreferrer">
+              <i className="fab fa-github fs-5"></i>
+            </a>
+          </div>
         </div>
       </div>
     </footer>

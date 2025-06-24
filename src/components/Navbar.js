@@ -76,14 +76,21 @@ const Navbar = () => {
             Blogs
           </Link>
 
-          {isLoggedIn && (
+          {/* {isLoggedIn && (
             <Link
               className="text-white text-decoration-none fw-semibold"
               to={`/profile/${loggedInUserName}`}
             >
               Profile
             </Link>
-          )}
+          )} */}
+
+          <Link
+            className="text-white text-decoration-none fw-semibold"
+            to="/profile"
+          >
+            Dashboard
+          </Link>
 
           {!isLoggedIn ? (
             <>

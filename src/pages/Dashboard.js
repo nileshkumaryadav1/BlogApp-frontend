@@ -14,31 +14,22 @@ const DashboardPage = () => {
   const loggedInUser_id = localStorage.getItem("_id");
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const res = await axios.get(
-          `https://blogapp-server-wa7m.onrender.com/api/users/?name=${loggedInUserName}`
-        );
-        setUsers(res.data[0]);
-      } catch (err) {
-        console.error("Error fetching user profile:", err);
-      }
-    };
-    fetchUserProfile();
+    axios
+      .get(`https://blogapp-server-wa7m.onrender.com/api/users/?name=${loggedInUserName}`)
+      .then((res) => setUsers(res.data[0]))
+      .catch((err) => console.error("Error fetching user profile:", err));
   }, [loggedInUserName]);
 
   useEffect(() => {
     axios
-      .get(
-        `https://blogapp-server-wa7m.onrender.com/api/blogs/?userEmail=${loggedInUserEmail}`
-      )
+      .get(`https://blogapp-server-wa7m.onrender.com/api/blogs/?userEmail=${loggedInUserEmail}`)
       .then((response) => {
         setPosts(response.data);
-        setLoading(false); // Stop loading once data is fetched
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching posts:", error);
-        alert("Failed to load your posts. Please try again later.");
+        alert("Failed to load your posts.");
         setLoading(false);
       });
   }, [loggedInUserEmail]);
@@ -51,10 +42,8 @@ const DashboardPage = () => {
   const handleDeletePost = async (id) => {
     if (window.confirm("Are you sure you want to delete this post?")) {
       try {
-        await axios.delete(
-          `https://blogapp-server-wa7m.onrender.com/api/blogs/${id}`
-        );
-        setPosts(posts.filter((post) => post._id !== id)); // Update state after deletion
+        await axios.delete(`https://blogapp-server-wa7m.onrender.com/api/blogs/${id}`);
+        setPosts(posts.filter((post) => post._id !== id));
         alert("Post deleted successfully!");
       } catch (err) {
         console.error(err);
@@ -64,16 +53,10 @@ const DashboardPage = () => {
   };
 
   const handleDeleteUser = async (id) => {
-    if (
-      window.confirm(
-        "Are you sure you want to delete your account? This action is irreversible."
-      )
-    ) {
+    if (window.confirm("Are you sure you want to delete your account? This action is irreversible.")) {
       try {
-        await axios.delete(
-          `https://blogapp-server-wa7m.onrender.com/api/users/${id}`
-        );
-        alert("Your account has been deleted successfully.");
+        await axios.delete(`https://blogapp-server-wa7m.onrender.com/api/users/${id}`);
+        alert("Account deleted successfully.");
         localStorage.clear();
         navigate("/");
       } catch (err) {
@@ -84,141 +67,98 @@ const DashboardPage = () => {
   };
 
   return (
-    <div>
-      <Container className="mt-2">
-        <h2 className="text-center mb-4">Welcome to Your Dashboard</h2>
+    <div className="bg-light min-vh-100 py-4">
+      <Container>
+        <h2 className="text-center fw-bold mb-5">👋 Welcome back, {loggedInUserName}</h2>
 
-        {/* user profile */}
-        <div>
-          {" "}
-          <div
-            className="card mx-auto text-center"
-            style={{ maxWidth: "600px" }}
-          >
-            <h2 className="pt-3">
-              <i className="fa-solid fa-user"></i>
-            </h2>
-            <div className="card-body">
-              <h4 className="card-title">{users.name}</h4>
-              <p className="card-text">{users.study}</p>
-
-              <Navbar expand="lg" bg="" variant="dark">
-                <Container>
-                  <Navbar.Brand>
-                    {/* <i className="fa-solid fa-blog fa-bounce"></i>log */}
-                  </Navbar.Brand>
-                  <div className="ml-auto d-flex">
-                    <Link
-                      to={`/edit-user/${loggedInUser_id}`}
-                      className="btn btn-warning mx-2"
-                    >
-                      Edit Profile
-                    </Link>
-                    <Button variant="danger" onClick={handleLogout}>
-                      Logout <i className="fa-solid fa-sign-out-alt"></i>
-                    </Button>
-                    <Button
-                      variant="light"
-                      className="text-danger mx-2"
-                      onClick={() => handleDeleteUser(loggedInUser_id)}
-                    >
-                      Delete Account <i className="fa-solid fa-trash-alt"></i>
-                    </Button>
-                  </div>
-                  <Navbar.Brand>
-                    {/* <i className="fa-solid fa-blog fa-bounce"></i>log */}
-                  </Navbar.Brand>
-                </Container>
-              </Navbar>
+        {/* User Profile Card */}
+        <Card className="shadow border-0 mx-auto text-center mb-5" style={{ maxWidth: "600px", borderRadius: "1.5rem" }}>
+          <Card.Body>
+            <h2 className="mb-3"><i className="fa-solid fa-user-circle text-primary"></i></h2>
+            <h4 className="fw-semibold">{users.name}</h4>
+            <p className="text-muted">{users.study || "Your field of study"}</p>
+            <div className="d-flex justify-content-center gap-2 flex-wrap mt-3">
+              <Link to={`/edit-user/${loggedInUser_id}`} className="btn btn-outline-warning">
+                Edit Profile
+              </Link>
+              <Button variant="outline-danger" onClick={handleLogout}>
+                Logout
+              </Button>
+              <Button variant="danger" onClick={() => handleDeleteUser(loggedInUser_id)}>
+                Delete Account
+              </Button>
             </div>
-          </div>
+          </Card.Body>
+        </Card>
 
-          <div className="row mt-4 text-center">
-            <div className="col-md-4 mb-3">
-              <h3>About Me</h3>
-              <p>{users.bio || "No bio available."}</p>
-            </div>
+        {/* Info Sections */}
+        <Row className="text-center mb-5">
+          <Col md={4}>
+            <h5 className="text-dark">🧾 About Me</h5>
+            <p className="text-muted">{users.bio || "No bio available."}</p>
+          </Col>
+          <Col md={4}>
+            <h5 className="text-dark">🔗 Social Links</h5>
+            <p>
+              <a href={users.instagram} target="_blank" rel="noreferrer" className="d-block text-danger text-decoration-none">
+                <i className="fab fa-instagram me-1"></i> Instagram
+              </a>
+              <a href={users.linkedin} target="_blank" rel="noreferrer" className="d-block text-primary text-decoration-none">
+                <i className="fab fa-linkedin me-1"></i> LinkedIn
+              </a>
+            </p>
+          </Col>
+          <Col md={4}>
+            <h5 className="text-dark">📞 Contact</h5>
+            <p className="text-muted">
+              Email: {users.email || "--@gmail.com"}
+              <br />
+              Phone: {users.phone || "+91 ----"}
+            </p>
+          </Col>
+        </Row>
 
-            <div className="col-md-4 mb-3">
-              <h3>Social Links</h3>
-              <p>
-                <a
-                  className="text-decoration-none d-block"
-                  href={users.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <i className="fa-brands fa-instagram me-2"></i>Instagram
-                </a>
-                <a
-                  className="text-decoration-none d-block"
-                  href={users.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <i className="fa-brands fa-linkedin me-2"></i>LinkedIn
-                </a>
-              </p>
-            </div>
-
-            <div className="col-md-4 mb-3">
-              <h3>Contact</h3>
-              <p>
-                Email: {users.email || "--@gmail.com"}
-                <br />
-                Phone: {users.phone || "+91 ----"}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="text-center">
-          <Link to="/create/blog" className="btn btn-primary mb-4">
-            <i className="fa-solid fa-pen-to-square"></i> Create New Blog
+        {/* Create Blog CTA */}
+        <div className="text-center mb-4">
+          <Link to="/create/blog" className="btn btn-primary btn-lg">
+            <i className="fa-solid fa-pen-to-square me-2"></i>Create New Blog
           </Link>
         </div>
 
+        {/* User Blogs Section */}
+        <h4 className="fw-bold mb-4">📝 Your Blogs</h4>
         {loading ? (
-          <div className="text-center">Loading...</div>
-        ) : (
+          <p className="text-center">Loading your blogs...</p>
+        ) : posts.length > 0 ? (
           <Row>
-            {posts.length > 0 ? (
-              posts.map((post) => (
-                <Col md={4} key={post._id} className="mb-4">
-                  <Card className="shadow-sm">
-                    <Card.Body>
-                      <Card.Title>{post.title}</Card.Title>
-                      <Card.Text>
-                        {post.description.substring(0, 100)}...
-                      </Card.Text>
-                      <Link
-                        to={`/blog/${post._id}`}
-                        className="btn btn-outline-secondary mb-2"
-                      >
+            {posts.map((post) => (
+              <Col md={6} lg={4} key={post._id} className="mb-4">
+                <Card className="h-100 shadow-sm rounded-4">
+                  <Card.Body className="d-flex flex-column">
+                    <Card.Title className="text-primary fw-semibold">{post.title}</Card.Title>
+                    <Card.Text className="text-muted small mb-3">
+                      {post.description.length > 100 ? post.description.slice(0, 100) + "..." : post.description}
+                    </Card.Text>
+                    <div className="mt-auto d-flex flex-column gap-2">
+                      <Link to={`/blog/${post._id}`} className="btn btn-outline-secondary">
                         View Full Blog
                       </Link>
                       <div className="d-flex justify-content-between">
-                        <Button
-                          variant="secondary"
-                          onClick={() => navigate(`/edit-blog/${post._id}`)}
-                        >
+                        <Button variant="secondary" onClick={() => navigate(`/edit-blog/${post._id}`)}>
                           Edit
                         </Button>
-                        <Button
-                          variant="danger"
-                          onClick={() => handleDeletePost(post._id)}
-                        >
-                          Delete <i className="fa-solid fa-trash"></i>
+                        <Button variant="danger" onClick={() => handleDeletePost(post._id)}>
+                          Delete
                         </Button>
                       </div>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              ))
-            ) : (
-              <p className="text-center">You have not created any blogs yet.</p>
-            )}
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
           </Row>
+        ) : (
+          <p className="text-muted text-center">You haven't created any blogs yet.</p>
         )}
       </Container>
     </div>
