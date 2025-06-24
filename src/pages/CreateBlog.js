@@ -27,7 +27,7 @@ const CreateBlog = () => {
       const loggedInUserEmail = localStorage.getItem("email");
 
       const response = await axios.post(
-        process.env.REACT_APP_API + "/api/blogs",
+        "https://blogapp-server-wa7m.onrender.com/api/blogs",
         {
           title,
           description,
@@ -115,7 +115,7 @@ const CreateBlog = () => {
                 type="text"
                 value={image}
                 className="form-control form-control border-primary mb-4"
-                onChange={(e) => setImage(e.target.files[0])}
+                onChange={(e) => setImage(e.target.value)}
                 placeholder="Image Url of your Blog"
                 required
               />
