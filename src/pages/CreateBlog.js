@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Navbar from "../components/Navbar.js";
-import bootstrap from "bootstrap/dist/css/bootstrap.min.css";
 
-// import toast, { Toaster } from 'react-hot-toast';
 const CreateBlog = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -30,8 +27,7 @@ const CreateBlog = () => {
       const loggedInUserEmail = localStorage.getItem("email");
 
       const response = await axios.post(
-        // "http://localhost:4000/api/blogs",
-        "https://blogapp-server-wa7m.onrender.com/api/blogs",
+        process.env.REACT_APP_API + "/api/blogs",
         {
           title,
           description,
@@ -114,11 +110,13 @@ const CreateBlog = () => {
               ></textarea>
             </div>
             <div>
-              <label>Upload Image of your Blog...</label>
+              <label>Image Url of your Blog...</label>
               <input
-                type="file"
+                type="text"
+                value={image}
                 className="form-control form-control border-primary mb-4"
                 onChange={(e) => setImage(e.target.files[0])}
+                placeholder="Image Url of your Blog"
                 required
               />
             </div>
