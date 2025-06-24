@@ -8,15 +8,19 @@ const EditBlog = () => {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [image, setImage] = useState("");
 
   // Fetch blog data when page loads
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const res = await axios.get(`https://blogapp-server-wa7m.onrender.com/api/blogs/${id}`);
+        const res = await axios.get(
+          `https://blogapp-server-wa7m.onrender.com/api/blogs/${id}`
+        );
         // const res = await axios.get(`http://localhost:4000/api/blogs/${id}`);
         setTitle(res.data.title);
         setDescription(res.data.description);
+        setImage(res.data.image);
       } catch (err) {
         console.error("Error fetching blog:", err);
       }
@@ -28,11 +32,15 @@ const EditBlog = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`https://blogapp-server-wa7m.onrender.com/api/blogs/${id}`, {
-      // await axios.put(`http://localhost:4000/api/blogs/${id}`, {
-        title,
-        description,
-      });
+      await axios.put(
+        `https://blogapp-server-wa7m.onrender.com/api/blogs/${id}`,
+        {
+          // await axios.put(`http://localhost:4000/api/blogs/${id}`, {
+          title,
+          description,
+          image,
+        }
+      );
       alert("Blog updated successfully 🎉!");
       navigate("/profile"); // Redirect to dashboard page
     } catch (err) {
@@ -62,6 +70,16 @@ const EditBlog = () => {
             rows="5"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Image URL</label>
+          <input
+            type="text"
+            className="form-control"
+            value={image}
+            onChange={(e) => setImage(e.target.value)}
             required
           />
         </div>

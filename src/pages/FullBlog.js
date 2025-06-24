@@ -57,36 +57,69 @@ export default function FullBlog() {
         <div className="card shadow-lg border-0 rounded-4 overflow-hidden">
           <div
             className="p-5 text-white text-center"
-            style={{ background: "linear-gradient(to right, #141E30, #243B55)" }}
+            style={{
+              background: "linear-gradient(to right, #141E30, #243B55)",
+            }}
           >
             <h1 className="fw-bold mb-3">{blog.title}</h1>
             <p className="mb-1">
-              by <a href={`/profile/${blog.userName}`} className="text-warning fw-semibold text-decoration-none">{blog.userName}</a>
+              by{" "}
+              <a
+                href={`/profile/${blog.userName}`}
+                className="text-warning fw-semibold text-decoration-none"
+              >
+                {blog.userName}
+              </a>
             </p>
-            <small className="text-light">🕒 {estimateReadTime(blog.description)} min read</small>
+            <small className="text-light">
+              🕒 {estimateReadTime(blog.description)} min read
+            </small>
             <div className="mt-3">
               <span className="badge bg-success me-2">👁️ {views} views</span>
               <span className="badge bg-danger me-2">❤️ {likes} likes</span>
-              <button className="btn btn-outline-light btn-sm" onClick={handleLike}>Like <i className="fa-solid fa-heart ms-1"></i></button>
+              <button
+                className="btn btn-outline-light btn-sm"
+                onClick={handleLike}
+              >
+                Like <i className="fa-solid fa-heart ms-1"></i>
+              </button>
             </div>
           </div>
 
           <div className="p-4 bg-white">
-            <p className="text-dark lh-lg fs-5" style={{ whiteSpace: "pre-line", lineHeight: "1.8" }}>
+            <img
+              src={blog.image}
+              alt={blog.title}
+              className="img-fluid mb-4"
+              style={{ maxHeight: "400px", objectFit: "cover" }}
+            />
+
+            <p
+              className="text-dark lh-lg fs-5"
+              style={{ whiteSpace: "pre-line", lineHeight: "1.8" }}
+            >
               {blog.description}
             </p>
 
             <hr className="my-4" />
 
             <p className="text-muted">
-              Written by <a href={`/profile/${blog.userName}`} className="fw-semibold text-dark text-decoration-none">{blog.userName}</a>
+              Written by{" "}
+              <a
+                href={`/profile/${blog.userName}`}
+                className="fw-semibold text-dark text-decoration-none"
+              >
+                {blog.userName}
+              </a>
             </p>
 
             <div className="mt-4">
               <h6 className="fw-bold mb-3">🔗 Share this blog:</h6>
               <div className="d-flex flex-wrap gap-3">
                 <a
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(blog.title)}&url=https://blogwriting.vercel.app/blog/${blog._id}`}
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                    blog.title
+                  )}&url=https://blogwriting.vercel.app/blog/${blog._id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-sm btn-outline-primary"
@@ -108,7 +141,11 @@ export default function FullBlog() {
                   <i className="fas fa-envelope me-1"></i> Email
                 </a>
                 <button
-                  onClick={() => navigator.clipboard.writeText(`https://blogwriting.vercel.app/blog/${blog._id}`)}
+                  onClick={() =>
+                    navigator.clipboard.writeText(
+                      `https://blogwriting.vercel.app/blog/${blog._id}`
+                    )
+                  }
                   className="btn btn-sm btn-outline-secondary"
                 >
                   <i className="fas fa-link me-1"></i> Copy Link
@@ -127,9 +164,15 @@ export default function FullBlog() {
                   <div className="card h-100 shadow-sm border-0 rounded-4">
                     <div className="card-body d-flex flex-column">
                       <h6 className="fw-bold text-primary">{b.title}</h6>
-                      <p className="text-muted small">{b.description.slice(0, 80)}...</p>
-                      <a href={`/blog/${b._id}`} className="btn btn-sm btn-outline-primary mt-auto">
-                        Read More <i className="fa-solid fa-arrow-right ms-1"></i>
+                      <p className="text-muted small">
+                        {b.description.slice(0, 80)}...
+                      </p>
+                      <a
+                        href={`/blog/${b._id}`}
+                        className="btn btn-sm btn-outline-primary mt-auto"
+                      >
+                        Read More{" "}
+                        <i className="fa-solid fa-arrow-right ms-1"></i>
                       </a>
                     </div>
                   </div>

@@ -8,6 +8,7 @@ import bootstrap from "bootstrap/dist/css/bootstrap.min.css";
 const CreateBlog = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [image, setImage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const CreateBlog = () => {
     e.preventDefault();
 
     // Validate inputs
-    if (!title || !description) {
+    if (!title || !description || !image) {
       setError("Please fill in all fields.");
       return;
     }
@@ -36,6 +37,7 @@ const CreateBlog = () => {
           description,
           loggedInUserName,
           loggedInUserEmail,
+          image,
         }
       );
 
@@ -61,7 +63,6 @@ const CreateBlog = () => {
 
   return (
     <>
-
       <div
         className="d-flex flex-column justify-content-center align-items-center bg-gradient vh-7"
         style={{
@@ -112,6 +113,15 @@ const CreateBlog = () => {
                 required
               ></textarea>
             </div>
+            <div>
+              <label>Upload Image of your Blog...</label>
+              <input
+                type="file"
+                className="form-control form-control border-primary mb-4"
+                onChange={(e) => setImage(e.target.files[0])}
+                required
+              />
+            </div>
 
             <button
               className="btn btn-primary p-2 fs-5"
@@ -124,7 +134,9 @@ const CreateBlog = () => {
         </div>
       </div>
       <footer className="bg-light text-black text-center py-3 position-fixed bottom-0 vw-100">
-        <p className="mb-0 ">&copy; 2025 Blog<i class="fa-solid fa-blog"></i>. All rights reserved.</p>  
+        <p className="mb-0 ">
+          &copy; 2025 Blog<i class="fa-solid fa-blog"></i>. All rights reserved.
+        </p>
       </footer>
     </>
   );
