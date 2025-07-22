@@ -133,6 +133,14 @@ const Navbar = () => {
               📝 Blogs
             </Link>
           </li>
+          <li>
+            <Link 
+            onClick={closeMenu} 
+            to={`/profile`}
+            >
+              🙍‍♂️ Dashboard
+            </Link>
+          </li>
           {isLoggedIn && (
             <li>
               <Link onClick={closeMenu} to={`/profile/${loggedInUserName}`}>

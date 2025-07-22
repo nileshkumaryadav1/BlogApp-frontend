@@ -53,6 +53,11 @@ function Footer() {
                   🔐 Login
                 </Link>
               </li>
+              <li>
+                <Link className="text-white text-decoration-none" to="/profile">
+                  👤Dashboard
+                </Link>
+              </li>
             </ul>
           </div>
 
