@@ -4,15 +4,22 @@ import { Link } from "react-router-dom";
 
 function AllUser() {
   const [users, setUsers] = useState([]);
-  const [loadingUsers, setLoadingUsers] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    axios
-      .get("https://blogapp-server-wa7m.onrender.com/api/users")
-      .then((res) => setUsers(res.data))
-      .catch((err) => console.error("Error fetching users:", err))
-      .finally(() => setLoadingUsers(false));
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get("https://blogapp-server-wa7m.onrender.com/api/users");
+        setUsers(res.data);
+      } catch (err) {
+        console.error("Error fetching users:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
   }, []);
 
   const filteredUsers = users.filter((user) =>
@@ -22,10 +29,12 @@ function AllUser() {
   return (
     <div className="bg-light py-5 min-vh-100">
       <div className="container">
+        {/* Header */}
         <h3 className="text-center fw-bold mb-4">
           <i className="fa-solid fa-users me-2 text-primary"></i>All Users
         </h3>
 
+        {/* Search */}
         <div className="row justify-content-center mb-4">
           <div className="col-md-6">
             <input
@@ -33,12 +42,13 @@ function AllUser() {
               placeholder="Search creators..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="form-control"
+              className="form-control shadow-sm"
             />
           </div>
         </div>
 
-        {loadingUsers ? (
+        {/* Content */}
+        {loading ? (
           <div className="text-center my-5">
             <div className="spinner-border text-primary" role="status" />
           </div>
@@ -47,35 +57,39 @@ function AllUser() {
         ) : (
           <div className="row">
             {filteredUsers.map((user) => (
-              <div
-                key={user._id}
-                className="col-md-6 col-lg-4 mb-4 d-flex"
-              >
-                <div className="card text-center w-100 shadow-sm border-0 rounded-4">
-                  <div className="card-body">
+              <div key={user._id} className="col-md-6 col-lg-4 mb-4 d-flex">
+                <div className="card text-center w-100 shadow-sm border-0 rounded-4 hover-card">
+                  <div className="card-body d-flex flex-column align-items-center">
+                    {/* Avatar */}
                     <img
                       src={`https://api.dicebear.com/7.x/initials/svg?seed=${user.name}`}
                       alt="avatar"
                       className="rounded-circle mb-3"
                       style={{ width: "70px", height: "70px" }}
                     />
+
+                    {/* Name & Study */}
                     <h5 className="fw-semibold mb-1">{user.name}</h5>
                     <p className="text-muted small mb-2">{user.study || "Blogger"}</p>
+
+                    {/* Social links */}
                     <div className="mb-3 d-flex justify-content-center gap-3">
                       {user.instagram && (
                         <a href={user.instagram} target="_blank" rel="noreferrer">
-                          <i className="fa-brands fa-instagram fs-5 text-danger"></i>
+                          <i className="fab fa-instagram fs-5 text-danger"></i>
                         </a>
                       )}
                       {user.linkedin && (
                         <a href={user.linkedin} target="_blank" rel="noreferrer">
-                          <i className="fa-brands fa-linkedin fs-5 text-primary"></i>
+                          <i className="fab fa-linkedin fs-5 text-primary"></i>
                         </a>
                       )}
                     </div>
+
+                    {/* Profile Button */}
                     <Link
                       to={`/profile/${user.name}`}
-                      className="btn btn-outline-primary btn-sm w-100"
+                      className="btn btn-outline-primary btn-sm w-100 mt-auto"
                     >
                       View Profile
                     </Link>

@@ -13,16 +13,17 @@ export default function GlobalPage() {
   const loggedInUserName = localStorage.getItem("name");
 
   useEffect(() => {
-    axios
-      .get("https://blogapp-server-wa7m.onrender.com/api/blogs")
-      .then((res) => setPosts(res.data))
-      .catch((err) => console.error(err))
+    const fetchPosts = axios.get("https://blogapp-server-wa7m.onrender.com/api/blogs");
+    const fetchUsers = axios.get("https://blogapp-server-wa7m.onrender.com/api/users");
+
+    fetchPosts
+      .then(res => setPosts(res.data))
+      .catch(err => console.error(err))
       .finally(() => setLoadingPosts(false));
 
-    axios
-      .get("https://blogapp-server-wa7m.onrender.com/api/users")
-      .then((res) => setUsers(res.data))
-      .catch((err) => console.error(err))
+    fetchUsers
+      .then(res => setUsers(res.data))
+      .catch(err => console.error(err))
       .finally(() => setLoadingUsers(false));
   }, []);
 
@@ -34,13 +35,13 @@ export default function GlobalPage() {
     return `${Math.floor(seconds / 86400)} day(s) ago`;
   };
 
-  const filteredPosts = posts.filter((p) =>
-    p.title.toLowerCase().includes(search.toLowerCase()) ||
-    p.userName.toLowerCase().includes(search.toLowerCase())
+  const filteredPosts = posts.filter(
+    p => p.title.toLowerCase().includes(search.toLowerCase()) ||
+         p.userName.toLowerCase().includes(search.toLowerCase())
   );
 
-  const filteredUsers = users.filter((u) =>
-    u.name.toLowerCase().includes(search.toLowerCase())
+  const filteredUsers = users.filter(
+    u => u.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const blogOfTheDay = posts[Math.floor(Math.random() * posts.length)];
@@ -49,7 +50,7 @@ export default function GlobalPage() {
     <div className="bg-light min-vh-100">
       {/* HERO */}
       <div className="text-white text-center py-5" style={{ background: "linear-gradient(to right, #000, #2575fc)" }}>
-        <h2 className="fw-bold mb-2">Hi {loggedInUserName} 👋</h2>
+        <h2 className="fw-bold mb-2">Hi {loggedInUserName || "Guest"} 👋</h2>
         <h1 className="fw-bold mb-3">Explore Blogs & Creators</h1>
         <p className="lead mb-4">Search through ideas, authors & stories</p>
         <div className="container d-flex justify-content-center">
@@ -57,7 +58,7 @@ export default function GlobalPage() {
             type="text"
             placeholder="Search users or blogs..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={e => setSearch(e.target.value)}
             className="form-control w-75 w-md-50"
           />
         </div>
@@ -68,7 +69,7 @@ export default function GlobalPage() {
         {blogOfTheDay && (
           <section className="mb-5">
             <h4 className="fw-bold mb-3">🌟 Blog of the Day</h4>
-            <div className="card shadow-sm border-0">
+            <div className="card shadow-sm border-0 hover-card">
               <div className="card-body">
                 <h5 className="card-title fw-semibold text-primary">{blogOfTheDay.title}</h5>
                 <p className="text-muted small">{blogOfTheDay.description.slice(0, 100)}...</p>
@@ -96,9 +97,9 @@ export default function GlobalPage() {
             ) : filteredUsers.length === 0 ? (
               <p className="text-muted">No users found.</p>
             ) : (
-              filteredUsers.slice(0, 4).map((user) => (
+              filteredUsers.slice(0, 4).map(user => (
                 <div key={user._id} className="col-md-3 mb-3">
-                  <div className="card text-center h-100 shadow-sm">
+                  <div className="card text-center h-100 shadow-sm hover-card">
                     <div className="card-body">
                       <img
                         src={`https://api.dicebear.com/7.x/initials/svg?seed=${user.name}`}
@@ -136,15 +137,13 @@ export default function GlobalPage() {
             ) : filteredPosts.length === 0 ? (
               <p className="text-muted">No blogs found.</p>
             ) : (
-              filteredPosts.slice(0, 6).map((post) => (
+              filteredPosts.slice(0, 6).map(post => (
                 <div key={post._id} className="col-md-4 mb-4">
-                  <div className="card h-100 shadow-sm">
+                  <div className="card h-100 shadow-sm hover-card">
                     <div className="card-body d-flex flex-column">
                       <h6 className="fw-semibold text-primary">{post.title.length > 40 ? post.title.slice(0, 40) + "..." : post.title}</h6>
                       <p className="text-muted small mb-2">{post.description.length > 60 ? post.description.slice(0, 60) + "..." : post.description}</p>
-                      <Link to={`/profile/${post.userName}`} className="text-decoration-none small mb-2">
-                        <i className="fa fa-user me-1"></i> {post.userName}
-                      </Link>
+                      <Link to={`/profile/${post.userName}`} className="text-decoration-none small mb-2"><i className="fa fa-user me-1"></i>{post.userName}</Link>
                       <span className="text-muted small mb-2">{getTimeAgo(post.timestamp)}</span>
                       <Link to={`/blog/${post._id}`} className="btn btn-outline-primary btn-sm mt-auto">Read More</Link>
                     </div>
